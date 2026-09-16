@@ -12,7 +12,7 @@ const contactRoutes = require('./routes/contact.routes');
 const statsRoutes = require('./routes/stats.routes');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // Nécessaire derrière un reverse-proxy (Apache/Nginx) pour que req.protocol reflète
 // bien "https" via l'en-tête X-Forwarded-Proto (sinon les URLs générées, ex: images
