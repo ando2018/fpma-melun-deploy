@@ -1,5 +1,3 @@
-const { getBaseUrl } = require('./baseUrl');
-
 function escapeHtml(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -22,23 +20,11 @@ function buildDescription(html, maxLength = 160) {
   return truncate(stripHtml(html), maxLength);
 }
 
-// Résout n'importe quelle valeur d'image (URL absolue, chemin /storage/..., chemin
-// d'asset frontend du type "assets/images/x.jpg") en URL absolue exploitable par les
-// aperçus de partage (qui exigent toujours une URL absolue pour og:image).
-function resolveAbsoluteImage(req, value, fallbackPath) {
-  const base = getBaseUrl(req);
-  const source = value && String(value).trim() ? value : fallbackPath;
-  if (/^https?:\/\//i.test(source)) {
-    return source;
-  }
-  return `${base}/${String(source).replace(/^\/+/, '')}`;
-}
-
 // Injecte les balises Open Graph / Twitter Card dans le <head> du index.html Angular, à
 // la place du <title> statique, pour que les aperçus de partage (WhatsApp, Facebook,
-// Messenger, X...) affichent le titre/image propres à l'article ou au verset du jour au
-// lieu de la page générique du site (ces bots ne lisent que le HTML brut, pas le rendu
-// Angular côté client).
+// Messenger, X...) affichent le titre et le lien propres à l'article ou au verset du
+// jour au lieu de la page générique du site (ces bots ne lisent que le HTML brut, pas
+// le rendu Angular côté client). Pas d'image dans l'aperçu, volontairement.
 function injectSocialMeta(html, meta) {
   const tags = [
     `<title>${escapeHtml(meta.title)}</title>`,
@@ -47,15 +33,13 @@ function injectSocialMeta(html, meta) {
     `<meta property="og:site_name" content="FPMA Melun">`,
     `<meta property="og:title" content="${escapeHtml(meta.title)}">`,
     `<meta property="og:description" content="${escapeHtml(meta.description)}">`,
-    `<meta property="og:image" content="${escapeHtml(meta.image)}">`,
     `<meta property="og:url" content="${escapeHtml(meta.url)}">`,
-    `<meta name="twitter:card" content="summary_large_image">`,
+    `<meta name="twitter:card" content="summary">`,
     `<meta name="twitter:title" content="${escapeHtml(meta.title)}">`,
-    `<meta name="twitter:description" content="${escapeHtml(meta.description)}">`,
-    `<meta name="twitter:image" content="${escapeHtml(meta.image)}">`
+    `<meta name="twitter:description" content="${escapeHtml(meta.description)}">`
   ].join('\n    ');
 
   return html.replace(/<title>.*?<\/title>/i, tags);
 }
 
-module.exports = { injectSocialMeta, buildDescription, resolveAbsoluteImage };
+module.exports = { injectSocialMeta, buildDescription };

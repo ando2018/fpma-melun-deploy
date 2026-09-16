@@ -14,8 +14,7 @@ const statsRoutes = require('./routes/stats.routes');
 const JsonStore = require('./utils/jsonStore');
 const { getBaseUrl } = require('./utils/baseUrl');
 const { annonceSlug } = require('./utils/annonceSlug');
-const { buildVersetImageUrl } = require('./utils/versetDuJour');
-const { injectSocialMeta, buildDescription, resolveAbsoluteImage } = require('./utils/socialMeta');
+const { injectSocialMeta, buildDescription } = require('./utils/socialMeta');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -56,7 +55,7 @@ if (fs.existsSync(FRONTEND_INDEX)) {
 
   // Envoie index.html en y injectant des balises Open Graph / Twitter Card dynamiques,
   // pour que le lien partagé (WhatsApp, Facebook, Messenger...) affiche le bon titre et
-  // la bonne image d'aperçu au lieu de la page générique du site.
+  // le bon lien au lieu de la page générique du site (sans image, volontairement).
   function sendIndexWithMeta(req, res, meta) {
     const html = fs.readFileSync(FRONTEND_INDEX, 'utf-8');
     res.send(injectSocialMeta(html, meta));
@@ -76,7 +75,6 @@ if (fs.existsSync(FRONTEND_INDEX)) {
         return sendIndexWithMeta(req, res, {
           title: `${annonce.title} — FPMA Melun`,
           description: buildDescription(annonce.description) || 'Actualités de la FPMA Melun.',
-          image: resolveAbsoluteImage(req, annonce.image, 'assets/images/eglise.jpg'),
           url: `${getBaseUrl(req)}${req.originalUrl}`,
           type: 'article'
         });
@@ -87,7 +85,6 @@ if (fs.existsSync(FRONTEND_INDEX)) {
       return sendIndexWithMeta(req, res, {
         title: 'Verset du jour — FPMA Melun',
         description: 'Découvrez le verset du jour de la FPMA Melun.',
-        image: buildVersetImageUrl(),
         url: `${getBaseUrl(req)}${req.originalUrl}`
       });
     }
