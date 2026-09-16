@@ -1,0 +1,13 @@
+{
+  "site": "FPMA",
+  "language": "fr",
+  "news": [],
+  "contact": {
+    "email": "contact@fpma.example",
+    "phone": ""
+  },
+  "assets": {
+    "logo": "assets/images/fpma-logo.svg",
+    "banner": "assets/images/fpma-banner.svg"
+  }
+}

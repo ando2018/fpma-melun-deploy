@@ -1,0 +1,21 @@
+{
+  "name": "fpma-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API backend pour le site FPMA Melun (vaovao, evenements, sary)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "multer": "^2.0.0",
+    "nodemailer": "^10.0.9"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

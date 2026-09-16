@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /
+
+# Let Angular handle client-side routes after a browser refresh.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]

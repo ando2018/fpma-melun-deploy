@@ -1,0 +1,123 @@
+[
+  {
+    "title": "25 ans de la FPMA MELUN",
+    "description": "<div><i>“Croissez dans la grâce et dans la connaissance de notre Seigneur et Sauveur Jésus-Christ. A Lui soit la gloire maintenant et jusqu'au jour de l'éternité! Amen.” 2 Pierre 3:18</i></div><div><i>A l'occasion du 25ème anniversaire de la FPMA Melun, nous sommes heureux de vous inviter à venir célébrer ce Jubilé avec nous pour la seule gloire de Dieu.</i></div><div><br></div><div><b>Billetterie en ligne:&nbsp;</b></div><div><a href=\"https://www.helloasso.com/associations/fpma-melun/evenements/25eme-anniversaire-de-la-fpma-melun\" target=\"_blank\" rel=\"noopener noreferrer\">https://www.helloasso.com/associations/fpma-melun/evenements/25eme-anniversaire-de-la-fpma-melun</a></div><div><br></div><div><br></div>",
+    "image": "http://localhost:3001/storage/vaovao/25ans-1789381875536.png",
+    "publishedAt": "2026-09-14",
+    "url": "/vaovao",
+    "featured": true,
+    "auteur": "admin",
+    "id": "annonce-1789378378224-2298"
+  },
+  {
+    "id": "a1",
+    "title": "25 ans de la FPMA Melun2",
+    "image": "assets/images/annonce-jubile.svg",
+    "description": "« Croissez dans la grâce et dans la connaissance de notre Seigneur et Sauveur Jésus-Christ. À Lui soit la gloire maintenant et jusqu’au jour de l’éternité. » <strong>2 Pierre 3:18</strong><br><br><em>Billetterie en ligne :</em><br><a href=\"https://fpma-melun.assoconnect.com/\" target=\"_blank\" rel=\"noopener noreferrer\">https://fpma-melun.assoconnect.com/</a>",
+    "publishedAt": "2026-09-07",
+    "url": "/vaovao",
+    "featured": true,
+    "auteur": "admin",
+    "masque": false
+  },
+  {
+    "id": "a2",
+    "title": "Soirée de louange et de prière",
+    "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "description": "Une soirée pour nous retrouver, louer Dieu et partager un temps de prière dans la fraternité. <strong>Entrée libre</strong> et ouverte à tous.<br><br><em>Rendez-vous à 19h30.</em>",
+    "publishedAt": "2026-09-05",
+    "url": "/vaovao",
+    "featured": true,
+    "auteur": "admin",
+    "masque": false
+  },
+  {
+    "id": "a3",
+    "title": "Culte spécial de rentrée",
+    "description": "La communauté se retrouve pour un culte spécial placé sous le signe de la reconnaissance et de la fraternité. <strong>Bienvenue à tous.</strong><br><br><em>Les détails seront bientôt communiqués.</em>",
+    "publishedAt": "2026-09-03",
+    "url": "/vaovao",
+    "auteur": "admin"
+  },
+  {
+    "id": "a4",
+    "title": "Rencontre des jeunes FPMA",
+    "image": "assets/images/annonce-jubile.svg",
+    "description": "Un temps de partage, de réflexion et de prière pour les jeunes. <em>Inscription recommandée.</em>",
+    "publishedAt": "2026-09-01",
+    "url": "/vaovao",
+    "auteur": "admin"
+  },
+  {
+    "id": "a5",
+    "title": "Réunion des responsables de sections",
+    "image": "assets/images/annonce-louange.svg",
+    "description": "Les responsables des sections sont invités à préparer ensemble les prochaines activités de la FPMA.",
+    "publishedAt": "2026-08-29",
+    "url": "/vaovao",
+    "auteur": "admin"
+  },
+  {
+    "id": "a6",
+    "title": "Journée familiale et fraternelle",
+    "image": "assets/images/annonce-jubile.svg",
+    "description": "Une journée de détente et de communion pour les familles. <strong>Repas partagé et animations.</strong>",
+    "publishedAt": "2026-08-25",
+    "url": "/vaovao",
+    "auteur": "admin"
+  },
+  {
+    "id": "a7",
+    "title": "Atelier de musique et de chant",
+    "image": "assets/images/annonce-louange.svg",
+    "description": "Les équipes musicales se réunissent pour préparer les prochains cultes et développer les talents de chacun.",
+    "publishedAt": "2026-08-21",
+    "url": "/vaovao",
+    "auteur": "admin"
+  },
+  {
+    "id": "a8",
+    "title": "Conférence biblique",
+    "image": "assets/images/annonce-jubile.svg",
+    "description": "Une conférence autour de la Parole de Dieu suivie d’un échange avec les participants. <em>Entrée libre.</em>",
+    "publishedAt": "2026-08-17",
+    "url": "/vaovao",
+    "auteur": "admin"
+  },
+  {
+    "id": "a9",
+    "title": "Action solidaire de la FPMA",
+    "image": "assets/images/annonce-louange.svg",
+    "description": "La FPMA organise une action solidaire pour accompagner les familles qui en ont besoin. <strong>Chaque geste compte.</strong>",
+    "publishedAt": "2026-08-12",
+    "url": "/vaovao",
+    "auteur": "admin"
+  },
+  {
+    "id": "a10",
+    "title": "Programme des activités de septembre",
+    "image": "assets/images/annonce-jubile.svg",
+    "description": "Découvrez le calendrier des cultes, réunions et activités communautaires du mois de septembre.",
+    "publishedAt": "2026-08-08",
+    "url": "/vaovao",
+    "auteur": "admin"
+  },
+  {
+    "id": "a11",
+    "title": "Veillée de prière communautaire",
+    "image": "assets/images/annonce-louange.svg",
+    "description": "Une veillée pour prier ensemble et confier à Dieu les projets de nos familles et de nos communautés.",
+    "publishedAt": "2026-08-04",
+    "url": "/vaovao",
+    "auteur": "admin"
+  },
+  {
+    "id": "a12",
+    "title": "Bilan des activités estivales",
+    "image": "assets/images/annonce-jubile.svg",
+    "description": "Retour sur les moments forts de l’été et témoignages des participants. <em>Merci à tous les bénévoles.</em>",
+    "publishedAt": "2026-07-30",
+    "url": "/vaovao",
+    "auteur": "admin"
+  }
+]
