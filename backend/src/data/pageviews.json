@@ -2005,5 +2005,239 @@
     "ip": "::1",
     "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
     "timestamp": "2026-09-16T16:33:08.304Z"
+  },
+  {
+    "id": "pv-1789584158943-9115",
+    "path": "/admin",
+    "sessionId": "sess-1789584158707-428254",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-09-16T18:42:38.943Z"
+  },
+  {
+    "id": "pv-1789584170382-9371",
+    "path": "/admin",
+    "sessionId": "sess-1789584170317-34828",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-09-16T18:42:50.382Z"
+  },
+  {
+    "id": "pv-1789584180545-4088",
+    "path": "/admin",
+    "sessionId": "sess-1789584180487-897009",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-09-16T18:43:00.545Z"
+  },
+  {
+    "id": "pv-1789584192022-7607",
+    "path": "/admin",
+    "sessionId": "sess-1789584191978-38478",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-09-16T18:43:12.022Z"
+  },
+  {
+    "id": "pv-1789584205760-2254",
+    "path": "/admin",
+    "sessionId": "sess-1789584205719-606885",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-09-16T18:43:25.760Z"
+  },
+  {
+    "id": "pv-1789584289330-3385",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-16T18:44:49.330Z"
+  },
+  {
+    "id": "pv-1789584292665-576",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-16T18:44:52.665Z"
+  },
+  {
+    "id": "pv-1789584294476-5164",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-16T18:44:54.477Z"
+  },
+  {
+    "id": "pv-1789584299939-6428",
+    "path": "/vaovao",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-16T18:44:59.939Z"
+  },
+  {
+    "id": "pv-1789584304195-3628",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-16T18:45:04.195Z"
+  },
+  {
+    "id": "pv-1789584306123-8470",
+    "path": "/samihafa",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-16T18:45:06.123Z"
+  },
+  {
+    "id": "pv-1789584307267-7575",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-16T18:45:07.267Z"
+  },
+  {
+    "id": "pv-1789584363975-2931",
+    "path": "/login",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-16T18:46:03.975Z"
+  },
+  {
+    "id": "pv-1789584369953-7219",
+    "path": "/admin",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-16T18:46:09.953Z"
+  },
+  {
+    "id": "pv-1789584394742-7220",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:46:34.742Z"
+  },
+  {
+    "id": "pv-1789584401958-1256",
+    "path": "/admin",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:46:41.959Z"
+  },
+  {
+    "id": "pv-1789584435589-635",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:47:15.589Z"
+  },
+  {
+    "id": "pv-1789584439540-9081",
+    "path": "/admin",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:47:19.540Z"
+  },
+  {
+    "id": "pv-1789584508054-182",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:48:28.054Z"
+  },
+  {
+    "id": "pv-1789584512175-7527",
+    "path": "/admin",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:48:32.175Z"
+  },
+  {
+    "id": "pv-1789584517770-7464",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:48:37.770Z"
+  },
+  {
+    "id": "pv-1789584642177-6567",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:50:42.177Z"
+  },
+  {
+    "id": "pv-1789584666483-2193",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "http://localhost:4200/",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:51:06.483Z"
+  },
+  {
+    "id": "pv-1789584724113-4379",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "http://localhost:4200/",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:52:04.113Z"
+  },
+  {
+    "id": "pv-1789584755196-4883",
+    "path": "/",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "http://localhost:4200/",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T18:52:35.196Z"
+  },
+  {
+    "id": "pv-1789585986112-3751",
+    "path": "/login",
+    "sessionId": "sess-1789572986486-578315",
+    "referrer": "http://localhost:4200/",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "timestamp": "2026-09-16T19:13:06.112Z"
   }
 ]

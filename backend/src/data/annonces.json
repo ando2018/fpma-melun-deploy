@@ -847,7 +847,8 @@
     "url": "/vaovao",
     "featured": true,
     "auteur": "admin",
-    "id": "annonce-1789378608663-1374"
+    "id": "annonce-1789378608663-1374",
+    "afficherAccueil": false
   },
   {
     "title": "CULTE D'OUVERTURE 25 ANS DE LA FPMA MELUN",
@@ -958,6 +959,7 @@
     "url": "/vaovao",
     "featured": true,
     "auteur": "saka",
-    "id": "annonce-1789378640134-1261"
+    "id": "annonce-1789378640134-1261",
+    "afficherAccueil": false
   }
 ]
