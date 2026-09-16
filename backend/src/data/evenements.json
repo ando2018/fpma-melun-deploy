@@ -2,7 +2,7 @@
   {
     "title": "25 ans de la FPMA Melun",
     "description": "<span style=\"color: rgb(51, 51, 51); font-size: 15px; font-style: italic;\">« Mais croissez dans la grâce et dans la connaissance de Jésus-Christ, notre Seigneur et Sauveur. À lui soit la gloire, maintenant et pour l'éternité! Amen. » 2 Pierre 3 : 18</span>",
-    "image": "http://localhost:3000/storage/evenements/screenshot-2026-09-14-152127-1789392194547.png",
+    "image": "/storage/evenements/screenshot-2026-09-14-152127-1789392194547.png",
     "date": "2026-10-03",
     "heure": "12H00",
     "location": "Le Rocheton",
@@ -12,7 +12,7 @@
   {
     "id": "evt-culte-2026-01-04",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-01-04",
     "location": "Dammarie Les Lys",
@@ -22,7 +22,7 @@
   {
     "id": "evt-priere-2026-01-06",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-01-06",
     "location": "A distance",
@@ -32,7 +32,7 @@
   {
     "id": "evt-culte-2026-01-11",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-01-11",
     "location": "Dammarie Les Lys",
@@ -42,7 +42,7 @@
   {
     "id": "evt-priere-2026-01-13",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-01-13",
     "location": "A distance",
@@ -52,7 +52,7 @@
   {
     "id": "evt-culte-2026-01-18",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-01-18",
     "location": "Dammarie Les Lys",
@@ -62,7 +62,7 @@
   {
     "id": "evt-priere-2026-01-20",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-01-20",
     "location": "A distance",
@@ -72,7 +72,7 @@
   {
     "id": "evt-culte-2026-01-25",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-01-25",
     "location": "Dammarie Les Lys",
@@ -82,7 +82,7 @@
   {
     "id": "evt-priere-2026-01-27",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-01-27",
     "location": "A distance",
@@ -92,7 +92,7 @@
   {
     "id": "evt-culte-2026-02-01",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-02-01",
     "location": "Dammarie Les Lys",
@@ -102,7 +102,7 @@
   {
     "id": "evt-priere-2026-02-03",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-02-03",
     "location": "A distance",
@@ -112,7 +112,7 @@
   {
     "id": "evt-culte-2026-02-08",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-02-08",
     "location": "Dammarie Les Lys",
@@ -122,7 +122,7 @@
   {
     "id": "evt-priere-2026-02-10",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-02-10",
     "location": "A distance",
@@ -132,7 +132,7 @@
   {
     "id": "evt-culte-2026-02-15",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-02-15",
     "location": "Dammarie Les Lys",
@@ -142,7 +142,7 @@
   {
     "id": "evt-priere-2026-02-17",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-02-17",
     "location": "A distance",
@@ -152,7 +152,7 @@
   {
     "id": "evt-culte-2026-02-22",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-02-22",
     "location": "Dammarie Les Lys",
@@ -162,7 +162,7 @@
   {
     "id": "evt-priere-2026-02-24",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-02-24",
     "location": "A distance",
@@ -172,7 +172,7 @@
   {
     "id": "evt-culte-2026-03-01",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-03-01",
     "location": "Dammarie Les Lys",
@@ -182,7 +182,7 @@
   {
     "id": "evt-priere-2026-03-03",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-03-03",
     "location": "A distance",
@@ -192,7 +192,7 @@
   {
     "id": "evt-culte-2026-03-08",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-03-08",
     "location": "Dammarie Les Lys",
@@ -202,7 +202,7 @@
   {
     "id": "evt-priere-2026-03-10",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-03-10",
     "location": "A distance",
@@ -212,7 +212,7 @@
   {
     "id": "evt-culte-2026-03-15",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-03-15",
     "location": "Dammarie Les Lys",
@@ -222,7 +222,7 @@
   {
     "id": "evt-priere-2026-03-17",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-03-17",
     "location": "A distance",
@@ -232,7 +232,7 @@
   {
     "id": "evt-culte-2026-03-22",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-03-22",
     "location": "Dammarie Les Lys",
@@ -242,7 +242,7 @@
   {
     "id": "evt-priere-2026-03-24",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-03-24",
     "location": "A distance",
@@ -252,7 +252,7 @@
   {
     "id": "evt-culte-2026-03-29",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-03-29",
     "location": "Dammarie Les Lys",
@@ -262,7 +262,7 @@
   {
     "id": "evt-priere-2026-03-31",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-03-31",
     "location": "A distance",
@@ -272,7 +272,7 @@
   {
     "id": "evt-culte-2026-04-05",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-04-05",
     "location": "Dammarie Les Lys",
@@ -282,7 +282,7 @@
   {
     "id": "evt-priere-2026-04-07",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-04-07",
     "location": "A distance",
@@ -292,7 +292,7 @@
   {
     "id": "evt-culte-2026-04-12",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-04-12",
     "location": "Dammarie Les Lys",
@@ -302,7 +302,7 @@
   {
     "id": "evt-priere-2026-04-14",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-04-14",
     "location": "A distance",
@@ -312,7 +312,7 @@
   {
     "id": "evt-culte-2026-04-19",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-04-19",
     "location": "Dammarie Les Lys",
@@ -322,7 +322,7 @@
   {
     "id": "evt-priere-2026-04-21",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-04-21",
     "location": "A distance",
@@ -332,7 +332,7 @@
   {
     "id": "evt-culte-2026-04-26",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-04-26",
     "location": "Dammarie Les Lys",
@@ -342,7 +342,7 @@
   {
     "id": "evt-priere-2026-04-28",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-04-28",
     "location": "A distance",
@@ -352,7 +352,7 @@
   {
     "id": "evt-culte-2026-05-03",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-05-03",
     "location": "Dammarie Les Lys",
@@ -362,7 +362,7 @@
   {
     "id": "evt-priere-2026-05-05",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-05-05",
     "location": "A distance",
@@ -372,7 +372,7 @@
   {
     "id": "evt-culte-2026-05-10",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-05-10",
     "location": "Dammarie Les Lys",
@@ -382,7 +382,7 @@
   {
     "id": "evt-priere-2026-05-12",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-05-12",
     "location": "A distance",
@@ -392,7 +392,7 @@
   {
     "id": "evt-culte-2026-05-17",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-05-17",
     "location": "Dammarie Les Lys",
@@ -402,7 +402,7 @@
   {
     "id": "evt-priere-2026-05-19",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-05-19",
     "location": "A distance",
@@ -412,7 +412,7 @@
   {
     "id": "evt-culte-2026-05-24",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-05-24",
     "location": "Dammarie Les Lys",
@@ -422,7 +422,7 @@
   {
     "id": "evt-priere-2026-05-26",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-05-26",
     "location": "A distance",
@@ -432,7 +432,7 @@
   {
     "id": "evt-culte-2026-05-31",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-05-31",
     "location": "Dammarie Les Lys",
@@ -442,7 +442,7 @@
   {
     "id": "evt-priere-2026-06-02",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-06-02",
     "location": "A distance",
@@ -452,7 +452,7 @@
   {
     "id": "evt-culte-2026-06-07",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-06-07",
     "location": "Dammarie Les Lys",
@@ -462,7 +462,7 @@
   {
     "id": "evt-priere-2026-06-09",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-06-09",
     "location": "A distance",
@@ -472,7 +472,7 @@
   {
     "id": "evt-culte-2026-06-14",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-06-14",
     "location": "Dammarie Les Lys",
@@ -482,7 +482,7 @@
   {
     "id": "evt-priere-2026-06-16",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-06-16",
     "location": "A distance",
@@ -492,7 +492,7 @@
   {
     "id": "evt-culte-2026-06-21",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-06-21",
     "location": "Dammarie Les Lys",
@@ -502,7 +502,7 @@
   {
     "id": "evt-priere-2026-06-23",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-06-23",
     "location": "A distance",
@@ -512,7 +512,7 @@
   {
     "id": "evt-culte-2026-06-28",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-06-28",
     "location": "Dammarie Les Lys",
@@ -522,7 +522,7 @@
   {
     "id": "evt-priere-2026-06-30",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-06-30",
     "location": "A distance",
@@ -532,7 +532,7 @@
   {
     "id": "evt-culte-2026-07-05",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-07-05",
     "location": "Dammarie Les Lys",
@@ -542,7 +542,7 @@
   {
     "id": "evt-priere-2026-07-07",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-07-07",
     "location": "A distance",
@@ -552,7 +552,7 @@
   {
     "id": "evt-culte-2026-07-12",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-07-12",
     "location": "Dammarie Les Lys",
@@ -562,7 +562,7 @@
   {
     "id": "evt-priere-2026-07-14",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-07-14",
     "location": "A distance",
@@ -572,7 +572,7 @@
   {
     "id": "evt-culte-2026-07-19",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-07-19",
     "location": "Dammarie Les Lys",
@@ -582,7 +582,7 @@
   {
     "id": "evt-priere-2026-07-21",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-07-21",
     "location": "A distance",
@@ -592,7 +592,7 @@
   {
     "id": "evt-culte-2026-07-26",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-07-26",
     "location": "Dammarie Les Lys",
@@ -602,7 +602,7 @@
   {
     "id": "evt-priere-2026-07-28",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-07-28",
     "location": "A distance",
@@ -612,7 +612,7 @@
   {
     "id": "evt-culte-2026-08-02",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-08-02",
     "location": "Dammarie Les Lys",
@@ -622,7 +622,7 @@
   {
     "id": "evt-priere-2026-08-04",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-08-04",
     "location": "A distance",
@@ -632,7 +632,7 @@
   {
     "id": "evt-culte-2026-08-09",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-08-09",
     "location": "Dammarie Les Lys",
@@ -642,7 +642,7 @@
   {
     "id": "evt-priere-2026-08-11",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-08-11",
     "location": "A distance",
@@ -652,7 +652,7 @@
   {
     "id": "evt-culte-2026-08-16",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-08-16",
     "location": "Dammarie Les Lys",
@@ -662,7 +662,7 @@
   {
     "id": "evt-priere-2026-08-18",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-08-18",
     "location": "A distance",
@@ -672,7 +672,7 @@
   {
     "id": "evt-culte-2026-08-23",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-08-23",
     "location": "Dammarie Les Lys",
@@ -682,7 +682,7 @@
   {
     "id": "evt-priere-2026-08-25",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-08-25",
     "location": "A distance",
@@ -692,7 +692,7 @@
   {
     "id": "evt-culte-2026-08-30",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-08-30",
     "location": "Dammarie Les Lys",
@@ -702,7 +702,7 @@
   {
     "id": "evt-priere-2026-09-01",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-09-01",
     "location": "A distance",
@@ -712,7 +712,7 @@
   {
     "id": "evt-culte-2026-09-06",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-09-06",
     "location": "Dammarie Les Lys",
@@ -722,7 +722,7 @@
   {
     "id": "evt-priere-2026-09-08",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-09-08",
     "location": "A distance",
@@ -732,7 +732,7 @@
   {
     "id": "evt-culte-2026-09-13",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-09-13",
     "location": "Dammarie Les Lys",
@@ -742,7 +742,7 @@
   {
     "id": "evt-priere-2026-09-15",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-09-15",
     "location": "A distance",
@@ -752,7 +752,7 @@
   {
     "id": "evt-culte-2026-09-20",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h00.<div><b>Hisy fandraisana Katekomena sy Batisa.</b></div>",
     "date": "2026-09-20",
     "location": "Dammarie Les Lys",
@@ -762,7 +762,7 @@
   {
     "id": "evt-priere-2026-09-22",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-09-22",
     "location": "A distance",
@@ -772,7 +772,7 @@
   {
     "id": "evt-culte-2026-09-27",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-09-27",
     "location": "Dammarie Les Lys",
@@ -782,7 +782,7 @@
   {
     "id": "evt-priere-2026-09-29",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-09-29",
     "location": "A distance",
@@ -792,7 +792,7 @@
   {
     "id": "evt-culte-2026-10-04",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-10-04",
     "location": "Dammarie Les Lys",
@@ -802,7 +802,7 @@
   {
     "id": "evt-priere-2026-10-06",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-10-06",
     "location": "A distance",
@@ -812,7 +812,7 @@
   {
     "id": "evt-culte-2026-10-11",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-10-11",
     "location": "Dammarie Les Lys",
@@ -822,7 +822,7 @@
   {
     "id": "evt-priere-2026-10-13",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-10-13",
     "location": "A distance",
@@ -832,7 +832,7 @@
   {
     "id": "evt-culte-2026-10-18",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-10-18",
     "location": "Dammarie Les Lys",
@@ -842,7 +842,7 @@
   {
     "id": "evt-priere-2026-10-20",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-10-20",
     "location": "A distance",
@@ -852,7 +852,7 @@
   {
     "id": "evt-culte-2026-10-25",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-10-25",
     "location": "Dammarie Les Lys",
@@ -862,7 +862,7 @@
   {
     "id": "evt-priere-2026-10-27",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-10-27",
     "location": "A distance",
@@ -872,7 +872,7 @@
   {
     "id": "evt-culte-2026-11-01",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-11-01",
     "location": "Dammarie Les Lys",
@@ -882,7 +882,7 @@
   {
     "id": "evt-priere-2026-11-03",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-11-03",
     "location": "A distance",
@@ -892,7 +892,7 @@
   {
     "id": "evt-culte-2026-11-08",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-11-08",
     "location": "Dammarie Les Lys",
@@ -902,7 +902,7 @@
   {
     "id": "evt-priere-2026-11-10",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-11-10",
     "location": "A distance",
@@ -912,7 +912,7 @@
   {
     "id": "evt-culte-2026-11-15",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-11-15",
     "location": "Dammarie Les Lys",
@@ -922,7 +922,7 @@
   {
     "id": "evt-priere-2026-11-17",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-11-17",
     "location": "A distance",
@@ -932,7 +932,7 @@
   {
     "id": "evt-culte-2026-11-22",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-11-22",
     "location": "Dammarie Les Lys",
@@ -942,7 +942,7 @@
   {
     "id": "evt-priere-2026-11-24",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-11-24",
     "location": "A distance",
@@ -952,7 +952,7 @@
   {
     "id": "evt-culte-2026-11-29",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-11-29",
     "location": "Dammarie Les Lys",
@@ -962,7 +962,7 @@
   {
     "id": "evt-priere-2026-12-01",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-12-01",
     "location": "A distance",
@@ -972,7 +972,7 @@
   {
     "id": "evt-culte-2026-12-06",
     "title": "Culte",
-    "image": "http://localhost:3000/storage/evenements/eglise.jpg",
+    "image": "/storage/evenements/eglise.jpg",
     "description": "Fanompom-pivavahana isak' Alahady ao amin'ny Eglise Adventiste 69 Avenue Maréchal Foch Dammarie les Lys, manomboka amin'ny 10h30.",
     "date": "2026-12-06",
     "location": "Dammarie Les Lys",
@@ -982,7 +982,7 @@
   {
     "id": "evt-priere-2026-12-08",
     "title": "Cellule de prière à distance",
-    "image": "http://localhost:3000/storage/evenements/cellule-priere.jpg",
+    "image": "/storage/evenements/cellule-priere.jpg",
     "description": "Miarahaba antsika amin'ny anaran'ny Tompo ! \n\n\n\nTahaka ny mahazatra dia misy ny alim-bavaka arahina par zoom <a target=\"_balnk\" href=\"Https://us02web.zoom.us/j/6936894758\"><u>Https://us02web.zoom.us/j/6936894758</u></a><br/> isak'ny  talata amin'ny 21h.",
     "date": "2026-12-08",
     "location": "A distance",

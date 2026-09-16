@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const JsonStore = require('../utils/jsonStore');
+const { toAbsoluteUrl } = require('../utils/baseUrl');
 
 const router = express.Router();
 const store = new JsonStore(path.join(__dirname, '..', 'data', 'evenements.json'));
@@ -44,29 +45,37 @@ function generateId() {
   return `evenement-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 }
 
+// Résout le champ "image" (chemin relatif /storage/... stocké) en URL absolue selon
+// la requête en cours — évite de figer un host/port dans les données stockées.
+function withAbsoluteImage(evenement, req) {
+  return { ...evenement, image: toAbsoluteUrl(req, evenement.image) };
+}
+
 // POST /api/evenements/upload-image - envoie une image sur le serveur, renvoie son URL
-// à réutiliser comme champ "image" lors de la création/modification d'un évènement.
+// (chemin relatif, résolu dynamiquement à la lecture — voir withAbsoluteImage) à
+// réutiliser comme champ "image" lors de la création/modification d'un évènement.
 router.post('/upload-image', upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Fichier requis (champ "file")' });
-  const baseUrl = `${req.protocol}://${req.get('host')}`;
-  res.status(201).json({ url: `${baseUrl}/storage/evenements/${encodeURIComponent(req.file.filename)}` });
+  const relativeUrl = `/storage/evenements/${encodeURIComponent(req.file.filename)}`;
+  res.status(201).json({ url: relativeUrl });
 });
 
 // GET /api/evenements - liste publique (sans les évènements masqués)
 router.get('/', (req, res) => {
-  res.json(store.readAll().filter(e => !e.masque));
+  const evenements = store.readAll().filter(e => !e.masque);
+  res.json(evenements.map(e => withAbsoluteImage(e, req)));
 });
 
 // GET /api/evenements/all - liste complète (admin), y compris masqués
 router.get('/all', (req, res) => {
-  res.json(store.readAll());
+  res.json(store.readAll().map(e => withAbsoluteImage(e, req)));
 });
 
 // GET /api/evenements/:id
 router.get('/:id', (req, res) => {
   const evenement = store.readAll().find(e => e.id === req.params.id);
   if (!evenement) return res.status(404).json({ error: 'Évènement introuvable' });
-  res.json(evenement);
+  res.json(withAbsoluteImage(evenement, req));
 });
 
 // POST /api/evenements

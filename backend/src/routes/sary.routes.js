@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const { getBaseUrl } = require('../utils/baseUrl');
 
 const router = express.Router();
 const SARY_DIR = path.join(__dirname, '..', 'storage', 'sary');
@@ -103,10 +104,6 @@ function listAlbums(baseUrl) {
     .filter(entry => entry.isDirectory())
     .map(entry => scanAlbum(entry.name, baseUrl))
     .sort((a, b) => b.dateCreation.localeCompare(a.dateCreation));
-}
-
-function getBaseUrl(req) {
-  return `${req.protocol}://${req.get('host')}`;
 }
 
 // GET /api/sary - scanne le dossier storage/sary et renvoie tous les albums

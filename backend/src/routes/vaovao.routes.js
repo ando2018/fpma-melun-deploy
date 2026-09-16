@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const JsonStore = require('../utils/jsonStore');
+const { toAbsoluteUrl } = require('../utils/baseUrl');
 
 const router = express.Router();
 const store = new JsonStore(path.join(__dirname, '..', 'data', 'annonces.json'));
@@ -55,29 +56,38 @@ function sortByPublishedAtDesc(annonces) {
   return [...annonces].sort((a, b) => dateValue(b) - dateValue(a));
 }
 
+// Résout le champ "image" (chemin relatif /storage/... stocké) en URL absolue selon
+// la requête en cours — évite de figer un host/port dans les données stockées.
+function withAbsoluteImage(annonce, req) {
+  return { ...annonce, image: toAbsoluteUrl(req, annonce.image) };
+}
+
 // POST /api/vaovao/upload-image - envoie une image sur le serveur, renvoie son URL
-// à réutiliser comme champ "image" lors de la création/modification d'une annonce.
+// (chemin relatif, résolu dynamiquement à la lecture — voir withAbsoluteImage) à
+// réutiliser comme champ "image" lors de la création/modification d'une annonce.
 router.post('/upload-image', upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Fichier requis (champ "file")' });
-  const baseUrl = `${req.protocol}://${req.get('host')}`;
-  res.status(201).json({ url: `${baseUrl}/storage/vaovao/${encodeURIComponent(req.file.filename)}` });
+  const relativeUrl = `/storage/vaovao/${encodeURIComponent(req.file.filename)}`;
+  res.status(201).json({ url: relativeUrl });
 });
 
 // GET /api/vaovao - liste publique (sans les annonces masquées), triée par date décroissante
 router.get('/', (req, res) => {
-  res.json(sortByPublishedAtDesc(store.readAll().filter(a => !a.masque)));
+  const annonces = sortByPublishedAtDesc(store.readAll().filter(a => !a.masque));
+  res.json(annonces.map(a => withAbsoluteImage(a, req)));
 });
 
 // GET /api/vaovao/all - liste complète (admin), y compris masquées, triée par date décroissante
 router.get('/all', (req, res) => {
-  res.json(sortByPublishedAtDesc(store.readAll()));
+  const annonces = sortByPublishedAtDesc(store.readAll());
+  res.json(annonces.map(a => withAbsoluteImage(a, req)));
 });
 
 // GET /api/vaovao/:id
 router.get('/:id', (req, res) => {
   const annonce = store.readAll().find(a => a.id === req.params.id);
   if (!annonce) return res.status(404).json({ error: 'Annonce introuvable' });
-  res.json(annonce);
+  res.json(withAbsoluteImage(annonce, req));
 });
 
 // POST /api/vaovao
