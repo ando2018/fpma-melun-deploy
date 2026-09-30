@@ -1,0 +1,14 @@
+[
+  {
+    "id": "user-admin",
+    "username": "saka",
+    "passwordHash": "569b99ea7c721dde414e4111129a8d1c:87fce1a8739a807c60402ebdb81f751efd1b6506cf616c384ef09a6130abb178acdda334ac09f6a5fe5f0f285b6b56b459e95b784dd1ad265a4fcd104530df62",
+    "role": "admin"
+  },
+  {
+    "id": "user-tombola",
+    "username": "tombola",
+    "passwordHash": "53a7d63e5c5dbdf6eed73be34b2a5425:4e3272e1430697dbf3043c3ed8c9459040c7b28951a457fd8a30678eae6096c5d9b84cfec550fe8651bda2474cdef074226d8e3e71672e4faee9f09be4a14092",
+    "role": "tombola"
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "histo-1790767806609-8581",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:30:06.609Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "4e tiré : n°32 — b"
+  },
+  {
+    "id": "histo-1790767942690-999",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:32:22.690Z",
+    "utilisateur": "saka",
+    "action": "vente",
+    "details": "Billets n°41, 42 — vcvcvcvc (06 20 73 61 17) — 4 € — CB"
+  },
+  {
+    "id": "histo-1790768192181-9036",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:36:32.181Z",
+    "utilisateur": "saka",
+    "action": "annulation_tirage",
+    "details": "N°17 — vfd"
+  },
+  {
+    "id": "histo-1790768197440-4266",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:36:37.440Z",
+    "utilisateur": "saka",
+    "action": "annulation_tirage",
+    "details": "N°32 — b"
+  },
+  {
+    "id": "histo-1790768198818-2417",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:36:38.818Z",
+    "utilisateur": "saka",
+    "action": "annulation_tirage",
+    "details": "N°15 — gfd"
+  },
+  {
+    "id": "histo-1790768199703-9836",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:36:39.703Z",
+    "utilisateur": "saka",
+    "action": "annulation_tirage",
+    "details": "N°34 — b"
+  },
+  {
+    "id": "histo-1790768207516-927",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:36:47.516Z",
+    "utilisateur": "saka",
+    "action": "annulation_billet",
+    "details": "Billet n°3 — k — 2 €"
+  },
+  {
+    "id": "histo-1790768212637-6565",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:36:52.637Z",
+    "utilisateur": "saka",
+    "action": "reactivation_billet",
+    "details": "Billet n°3 — k — 2 €"
+  },
+  {
+    "id": "histo-1790768285828-2136",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:38:05.828Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "1er tiré : n°42 — vcvcvcvc"
+  },
+  {
+    "id": "histo-1790768731336-5813",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:45:31.336Z",
+    "utilisateur": "saka",
+    "action": "vente",
+    "details": "Billets n°55, 56 — c (06 20 73 61 17) — 4 € — CB"
+  },
+  {
+    "id": "histo-1790769166310-6172",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T11:52:46.310Z",
+    "utilisateur": "saka",
+    "action": "vente",
+    "details": "Billets n°67, 77 — randrianasolo ando (06 20 73 61 17) — 4 € — Chèque"
+  },
+  {
+    "id": "histo-1790769795264-8686",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T12:03:15.264Z",
+    "utilisateur": "saka",
+    "action": "annulation_tirage",
+    "details": "N°42 — vcvcvcvc"
+  },
+  {
+    "id": "histo-1790769849776-9374",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T12:04:09.776Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "1er tiré : n°42 — vcvcvcvc"
+  },
+  {
+    "id": "histo-1790769867599-2901",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T12:04:27.599Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "2e tiré : n°32 — b"
+  },
+  {
+    "id": "histo-1790769913096-7194",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-09-30T12:05:13.096Z",
+    "utilisateur": "saka",
+    "action": "annulation_tirage",
+    "details": "N°42 — vcvcvcvc"
+  }
+]

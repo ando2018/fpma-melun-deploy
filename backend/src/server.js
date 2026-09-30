@@ -10,6 +10,8 @@ const evenementsRoutes = require('./routes/evenements.routes');
 const saryRoutes = require('./routes/sary.routes');
 const contactRoutes = require('./routes/contact.routes');
 const statsRoutes = require('./routes/stats.routes');
+const tombolaRoutes = require('./routes/tombola.routes');
+const authRoutes = require('./routes/auth.routes');
 
 const JsonStore = require('./utils/jsonStore');
 const { getBaseUrl } = require('./utils/baseUrl');
@@ -37,6 +39,8 @@ app.use('/api/evenements', evenementsRoutes);
 app.use('/api/sary', saryRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/tombola', tombolaRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 

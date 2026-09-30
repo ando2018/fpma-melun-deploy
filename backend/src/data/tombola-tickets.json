@@ -1,0 +1,166 @@
+[
+  {
+    "id": "ticket-1790711122088-3797",
+    "numero": 50,
+    "nom": "l",
+    "telephone": "26",
+    "prixPaye": 2,
+    "createdAt": "2026-09-29T19:45:22.088Z",
+    "eventId": "tombola-1790760178156-32"
+  },
+  {
+    "id": "ticket-1790711414914-6784",
+    "numero": 45,
+    "nom": "d",
+    "telephone": "5",
+    "prixPaye": 2,
+    "createdAt": "2026-09-29T19:50:14.914Z",
+    "eventId": "tombola-1790760178156-32"
+  },
+  {
+    "id": "ticket-1790711420111-7222",
+    "numero": 15,
+    "nom": "gfd",
+    "telephone": "gd",
+    "prixPaye": 2,
+    "createdAt": "2026-09-29T19:50:20.111Z",
+    "eventId": "tombola-1790760178156-32"
+  },
+  {
+    "id": "ticket-1790711425888-5552",
+    "numero": 17,
+    "nom": "vfd",
+    "telephone": "vds",
+    "prixPaye": 2,
+    "createdAt": "2026-09-29T19:50:25.888Z",
+    "eventId": "tombola-1790760178156-32"
+  },
+  {
+    "id": "ticket-1790711557254-5169",
+    "numero": 3,
+    "nom": "k",
+    "telephone": "k",
+    "prixPaye": 2,
+    "createdAt": "2026-09-29T19:52:37.254Z",
+    "annule": false,
+    "eventId": "tombola-1790760178156-32"
+  },
+  {
+    "id": "ticket-1790762544579-5336-0",
+    "eventId": "tombola-1790760178156-32",
+    "numero": 32,
+    "nom": "b",
+    "telephone": "g",
+    "prixPaye": 2,
+    "createdAt": "2026-09-30T10:02:24.579Z",
+    "annule": false
+  },
+  {
+    "id": "ticket-1790762544579-4373-1",
+    "eventId": "tombola-1790760178156-32",
+    "numero": 34,
+    "nom": "b",
+    "telephone": "g",
+    "prixPaye": 2,
+    "createdAt": "2026-09-30T10:02:24.579Z",
+    "annule": false
+  },
+  {
+    "id": "ticket-1790762544579-2640-2",
+    "eventId": "tombola-1790760178156-32",
+    "numero": 36,
+    "nom": "b",
+    "telephone": "g",
+    "prixPaye": 2,
+    "createdAt": "2026-09-30T10:02:24.579Z",
+    "annule": false
+  },
+  {
+    "id": "ticket-1790766287272-6645-0",
+    "eventId": "tombola-1790760178156-32",
+    "numero": 61,
+    "nom": "vc",
+    "telephone": "06 20 73 61 17",
+    "prixPaye": 2,
+    "createdAt": "2026-09-30T11:04:47.272Z",
+    "annule": false
+  },
+  {
+    "id": "ticket-1790767942677-9416-0",
+    "eventId": "tombola-1790760178156-32",
+    "venteId": "vente-1790767942677-1463",
+    "numero": 41,
+    "nom": "vcvcvcvc",
+    "telephone": "06 20 73 61 17",
+    "prixPaye": 2,
+    "modePaiement": "cb",
+    "vendeur": "saka",
+    "createdAt": "2026-09-30T11:32:22.677Z",
+    "annule": false
+  },
+  {
+    "id": "ticket-1790767942677-730-1",
+    "eventId": "tombola-1790760178156-32",
+    "venteId": "vente-1790767942677-1463",
+    "numero": 42,
+    "nom": "vcvcvcvc",
+    "telephone": "06 20 73 61 17",
+    "prixPaye": 2,
+    "modePaiement": "cb",
+    "vendeur": "saka",
+    "createdAt": "2026-09-30T11:32:22.677Z",
+    "annule": false
+  },
+  {
+    "id": "ticket-1790768731333-8024-0",
+    "eventId": "tombola-1790760178156-32",
+    "venteId": "vente-1790768731333-6514",
+    "numero": 55,
+    "nom": "c",
+    "telephone": "06 20 73 61 17",
+    "prixPaye": 2,
+    "modePaiement": "cb",
+    "vendeur": "saka",
+    "createdAt": "2026-09-30T11:45:31.333Z",
+    "annule": false
+  },
+  {
+    "id": "ticket-1790768731333-7056-1",
+    "eventId": "tombola-1790760178156-32",
+    "venteId": "vente-1790768731333-6514",
+    "numero": 56,
+    "nom": "c",
+    "telephone": "06 20 73 61 17",
+    "prixPaye": 2,
+    "modePaiement": "cb",
+    "vendeur": "saka",
+    "createdAt": "2026-09-30T11:45:31.333Z",
+    "annule": false
+  },
+  {
+    "id": "ticket-1790769166309-5700-0",
+    "eventId": "tombola-1790760178156-32",
+    "venteId": "vente-1790769166309-980",
+    "numero": 67,
+    "nom": "randrianasolo ando",
+    "telephone": "06 20 73 61 17",
+    "prixPaye": 2,
+    "modePaiement": "cheque",
+    "vendeur": "saka",
+    "createdAt": "2026-09-30T11:52:46.309Z",
+    "annule": false
+  },
+  {
+    "id": "ticket-1790769166309-2048-1",
+    "eventId": "tombola-1790760178156-32",
+    "venteId": "vente-1790769166309-980",
+    "numero": 77,
+    "nom": "randrianasolo ando",
+    "telephone": "06 20 73 61 17",
+    "prixPaye": 2,
+    "modePaiement": "cheque",
+    "vendeur": "saka",
+    "createdAt": "2026-09-30T11:52:46.309Z",
+    "annule": false
+  }
+]
