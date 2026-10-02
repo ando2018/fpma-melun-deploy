@@ -118,5 +118,165 @@
     "utilisateur": "saka",
     "action": "annulation_tirage",
     "details": "N°42 — vcvcvcvc"
+  },
+  {
+    "id": "histo-1790938661052-5036",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T10:57:41.052Z",
+    "utilisateur": "saka",
+    "action": "annulation_billet",
+    "details": "Billet n°3 — k — 2 €"
+  },
+  {
+    "id": "histo-1790938674608-6021",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T10:57:54.608Z",
+    "utilisateur": "saka",
+    "action": "reactivation_billet",
+    "details": "Billet n°3 — k — 2 €"
+  },
+  {
+    "id": "histo-1790938694148-8047",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T10:58:14.148Z",
+    "utilisateur": "saka",
+    "action": "annulation_billet",
+    "details": "Billet n°3 — k — 2 €"
+  },
+  {
+    "id": "histo-1790938699125-8510",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T10:58:19.125Z",
+    "utilisateur": "saka",
+    "action": "reactivation_billet",
+    "details": "Billet n°3 — k — 2 €"
+  },
+  {
+    "id": "histo-1790938763612-4226",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T10:59:23.612Z",
+    "utilisateur": "saka",
+    "action": "annulation_tirage",
+    "details": "N°32 — b"
+  },
+  {
+    "id": "histo-1790938783857-8122",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T10:59:43.857Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "1er tiré : n°45 — d"
+  },
+  {
+    "id": "histo-1790938785836-8997",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T10:59:45.836Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "2e tiré : n°17 — vfd"
+  },
+  {
+    "id": "histo-1790938787608-4323",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T10:59:47.608Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "3e tiré : n°42 — vcvcvcvc"
+  },
+  {
+    "id": "histo-1790938791389-7306",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T10:59:51.389Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "4e tiré : n°32 — b"
+  },
+  {
+    "id": "histo-1790938795587-508",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T10:59:55.587Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "5e tiré : n°61 — vc"
+  },
+  {
+    "id": "histo-1790938824602-5427",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T11:00:24.602Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "6e tiré : n°56 — c"
+  },
+  {
+    "id": "histo-1790938844964-3947",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T11:00:44.964Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "7e tiré : n°41 — vcvcvcvc"
+  },
+  {
+    "id": "histo-1790938846791-6839",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T11:00:46.791Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "8e tiré : n°15 — gfd"
+  },
+  {
+    "id": "histo-1790938848458-155",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T11:00:48.458Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "9e tiré : n°3 — k"
+  },
+  {
+    "id": "histo-1790938850920-5050",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T11:00:50.920Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "10e tiré : n°36 — b"
+  },
+  {
+    "id": "histo-1790938853445-7140",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T11:00:53.445Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "11e tiré : n°55 — c"
+  },
+  {
+    "id": "histo-1790938856177-9745",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T11:00:56.177Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "12e tiré : n°34 — b"
+  },
+  {
+    "id": "histo-1790938859121-870",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T11:00:59.121Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "13e tiré : n°50 — l"
+  },
+  {
+    "id": "histo-1790938861950-79",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T11:01:01.950Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "14e tiré : n°77 — randrianasolo ando"
+  },
+  {
+    "id": "histo-1790938865767-2875",
+    "eventId": "tombola-1790760178156-32",
+    "date": "2026-10-02T11:01:05.767Z",
+    "utilisateur": "saka",
+    "action": "tirage",
+    "details": "15e tiré : n°67 — randrianasolo ando"
   }
 ]

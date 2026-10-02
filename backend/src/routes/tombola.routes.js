@@ -333,8 +333,23 @@ router.get('/events/:id/screen', (req, res) => {
     nom: event.nom,
     totalTickets: event.totalTickets,
     current: winners.find(w => w.drawId === event.screenDrawId) || null,
+    showWinners: event.screenShowWinners !== false,
     winners
   });
+});
+
+// PATCH /api/tombola/events/:id/screen - réglages de l'écran de projection
+// ({ showWinners: boolean } : afficher ou masquer la liste des gagnants)
+router.patch('/events/:id/screen', (req, res) => {
+  const events = eventsStore.readAll();
+  const index = events.findIndex(e => e.id === req.params.id);
+  if (index === -1) return res.status(404).json({ error: 'Évènement introuvable' });
+  if (typeof req.body?.showWinners !== 'boolean') {
+    return res.status(400).json({ error: 'showWinners doit valoir true ou false.' });
+  }
+  events[index].screenShowWinners = req.body.showWinners;
+  eventsStore.writeAll(events);
+  res.json({ showWinners: events[index].screenShowWinners });
 });
 
 module.exports = router;
