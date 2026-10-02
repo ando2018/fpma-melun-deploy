@@ -1,3 +1,7 @@
 node_modules/
 npm-debug.log*
 .env
+
+# Clé privée des notifications push et liste des abonnés (données personnelles)
+src/data/push-vapid.json
+src/data/push-subscriptions.json

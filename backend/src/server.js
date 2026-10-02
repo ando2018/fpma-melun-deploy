@@ -12,6 +12,8 @@ const contactRoutes = require('./routes/contact.routes');
 const statsRoutes = require('./routes/stats.routes');
 const tombolaRoutes = require('./routes/tombola.routes');
 const authRoutes = require('./routes/auth.routes');
+const pushRoutes = require('./routes/push.routes');
+const liveRoutes = require('./routes/live.routes');
 
 const JsonStore = require('./utils/jsonStore');
 const { getBaseUrl } = require('./utils/baseUrl');
@@ -41,6 +43,8 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/tombola', tombolaRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/push', pushRoutes);
+app.use('/api/live', liveRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 

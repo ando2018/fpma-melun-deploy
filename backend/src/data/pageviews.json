@@ -5119,5 +5119,41 @@
     "ip": "::1",
     "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
     "timestamp": "2026-10-02T11:10:16.269Z"
+  },
+  {
+    "id": "pv-1790981066772-8009",
+    "path": "/login?returnUrl=%2Fadmin",
+    "sessionId": "sess-1790978542122-51921",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-02T22:44:26.772Z"
+  },
+  {
+    "id": "pv-1790981068153-3986",
+    "path": "/admin",
+    "sessionId": "sess-1790978542122-51921",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-02T22:44:28.153Z"
+  },
+  {
+    "id": "pv-1790981069779-35",
+    "path": "/admin?tab=diaporama",
+    "sessionId": "sess-1790978542122-51921",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-02T22:44:29.779Z"
+  },
+  {
+    "id": "pv-1790981080453-70",
+    "path": "/diaporama?duree=6&aleatoire=0&legende=1",
+    "sessionId": "sess-1790981080402-641559",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-02T22:44:40.453Z"
   }
 ]
