@@ -89,6 +89,21 @@ if (fs.existsSync(FRONTEND_INDEX)) {
       }
     }
 
+    // Aperçu de partage d'un album Sary (titre de l'album).
+    const albumMatch = req.path.match(/^\/sary\/album\/([^/]+)\/?$/);
+    if (albumMatch) {
+      const albumsDir = path.join(__dirname, 'storage', 'sary');
+      const albums = fs.existsSync(albumsDir) ? fs.readdirSync(albumsDir) : [];
+      const album = albums.find(name => annonceSlug(name) === albumMatch[1]);
+      if (album) {
+        return sendIndexWithMeta(req, res, {
+          title: `${album} — Sary FPMA Melun`,
+          description: `Album photos « ${album} » de la FPMA Melun.`,
+          url: `${getBaseUrl(req)}${req.originalUrl}`
+        });
+      }
+    }
+
     if (req.path === '/verset-du-jour') {
       return sendIndexWithMeta(req, res, {
         title: 'Verset du jour — FPMA Melun',
