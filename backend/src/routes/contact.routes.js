@@ -1,10 +1,9 @@
-const express = require('express');
-const path = require('path');
 const nodemailer = require('nodemailer');
-const JsonStore = require('../utils/jsonStore');
+const asyncRouter = require('../utils/asyncRouter');
+const { col, NO_ID } = require('../utils/db');
 
-const router = express.Router();
-const store = new JsonStore(path.join(__dirname, '..', 'data', 'messages.json'));
+const router = asyncRouter();
+const messages = () => col('messages');
 
 function isSmtpConfigured() {
   return !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
@@ -59,34 +58,30 @@ router.post('/', async (req, res) => {
     console.warn('SMTP non configuré (voir .env.example) — message enregistré mais pas envoyé par mail.');
   }
 
-  const all = store.readAll();
-  all.unshift(entry);
-  store.writeAll(all);
-
+  await messages().insertOne({ ...entry });
   res.status(201).json({ success: true, mailSent: entry.mailSent });
 });
 
-// GET /api/contact - liste des messages reçus (admin)
-router.get('/', (req, res) => {
-  res.json(store.readAll());
+// GET /api/contact - liste des messages reçus (admin), du plus récent au plus ancien
+router.get('/', async (req, res) => {
+  res.json(await messages().find({}, NO_ID).sort({ receivedAt: -1, _id: -1 }).toArray());
 });
 
 // PATCH /api/contact/:id/lu - marque un message comme lu
-router.patch('/:id/lu', (req, res) => {
-  const all = store.readAll();
-  const index = all.findIndex(m => m.id === req.params.id);
-  if (index === -1) return res.status(404).json({ error: 'Message introuvable' });
-  all[index].lu = true;
-  store.writeAll(all);
-  res.json(all[index]);
+router.patch('/:id/lu', async (req, res) => {
+  const updated = await messages().findOneAndUpdate(
+    { id: req.params.id },
+    { $set: { lu: true } },
+    { returnDocument: 'after', ...NO_ID }
+  );
+  if (!updated) return res.status(404).json({ error: 'Message introuvable' });
+  res.json(updated);
 });
 
 // DELETE /api/contact/:id - supprime un message
-router.delete('/:id', (req, res) => {
-  const all = store.readAll();
-  const filtered = all.filter(m => m.id !== req.params.id);
-  if (filtered.length === all.length) return res.status(404).json({ error: 'Message introuvable' });
-  store.writeAll(filtered);
+router.delete('/:id', async (req, res) => {
+  const { deletedCount } = await messages().deleteOne({ id: req.params.id });
+  if (!deletedCount) return res.status(404).json({ error: 'Message introuvable' });
   res.status(204).end();
 });
 

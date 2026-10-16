@@ -1,10 +1,9 @@
-const express = require('express');
-const path = require('path');
-const JsonStore = require('../utils/jsonStore');
+const asyncRouter = require('../utils/asyncRouter');
+const { col } = require('../utils/db');
 
-const router = express.Router();
-const pageviewsStore = new JsonStore(path.join(__dirname, '..', 'data', 'pageviews.json'));
-const locationsStore = new JsonStore(path.join(__dirname, '..', 'data', 'ip-locations.json'));
+const router = asyncRouter();
+const pageviews = () => col('pageviews');
+const locations = () => col('ip_locations');
 
 const VISITOR_LIMIT = 100;
 const DAILY_RANGE = 14;
@@ -27,29 +26,21 @@ function isPrivateIp(ip) {
   );
 }
 
-function upsertLocation(ip, loc) {
-  const all = locationsStore.readAll();
-  const idx = all.findIndex(l => l.ip === ip);
-  const entry = { ip, ...loc, resolvedAt: new Date().toISOString() };
-  if (idx === -1) {
-    all.push(entry);
-  } else {
-    all[idx] = entry;
-  }
-  locationsStore.writeAll(all);
+async function upsertLocation(ip, loc) {
+  await locations().updateOne(
+    { ip },
+    { $set: { ip, ...loc, resolvedAt: new Date().toISOString() } },
+    { upsert: true }
+  );
 }
 
 // Résout pays/région/ville pour une IP via une API de géolocalisation gratuite, sans clé.
 // Ne bloque jamais la requête appelante : toujours utilisée en fire-and-forget.
 async function resolveLocationAsync(ip) {
-  if (!ip || isPrivateIp(ip)) {
-    if (!locationsStore.readAll().some(l => l.ip === ip)) {
-      upsertLocation(ip, { country: 'Local', region: '', city: '' });
-    }
-    return;
-  }
+  if (await locations().findOne({ ip })) return;
 
-  if (locationsStore.readAll().some(l => l.ip === ip)) {
+  if (!ip || isPrivateIp(ip)) {
+    await upsertLocation(ip, { country: 'Local', region: '', city: '' });
     return;
   }
 
@@ -57,14 +48,19 @@ async function resolveLocationAsync(ip) {
     const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,regionName,city`);
     const data = await response.json();
     if (data.status === 'success') {
-      upsertLocation(ip, { country: data.country || 'Inconnu', region: data.regionName || '', city: data.city || '' });
+      await upsertLocation(ip, { country: data.country || 'Inconnu', region: data.regionName || '', city: data.city || '' });
     } else {
-      upsertLocation(ip, { country: 'Inconnu', region: '', city: '' });
+      await upsertLocation(ip, { country: 'Inconnu', region: '', city: '' });
     }
   } catch (err) {
     console.warn('Géolocalisation IP échouée pour', ip, ':', err.message);
-    upsertLocation(ip, { country: 'Inconnu', region: '', city: '' });
+    await upsertLocation(ip, { country: 'Inconnu', region: '', city: '' });
   }
+}
+
+async function locationsByIp(ips) {
+  const list = await locations().find({ ip: { $in: ips } }, { projection: { _id: 0 } }).toArray();
+  return Object.fromEntries(list.map(l => [l.ip, l]));
 }
 
 function locationFor(ip, locByIp) {
@@ -72,14 +68,14 @@ function locationFor(ip, locByIp) {
 }
 
 // POST /api/stats/pageview  { path, sessionId, referrer } - enregistre une navigation de page.
-router.post('/pageview', (req, res) => {
+router.post('/pageview', async (req, res) => {
   const { path: pagePath, sessionId, referrer } = req.body || {};
   if (!pagePath || !sessionId) {
     return res.status(400).json({ error: 'path et sessionId sont requis' });
   }
 
   const ip = getClientIp(req);
-  const entry = {
+  await pageviews().insertOne({
     id: `pv-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
     path: pagePath,
     sessionId,
@@ -87,11 +83,7 @@ router.post('/pageview', (req, res) => {
     ip,
     userAgent: req.get('user-agent') || '',
     timestamp: new Date().toISOString()
-  };
-
-  const all = pageviewsStore.readAll();
-  all.push(entry);
-  pageviewsStore.writeAll(all);
+  });
 
   res.status(201).json({ success: true });
 
@@ -99,33 +91,8 @@ router.post('/pageview', (req, res) => {
 });
 
 // GET /api/stats/summary - statistiques agrégées pour le tableau de bord admin.
-router.get('/summary', (req, res) => {
-  const all = pageviewsStore.readAll();
-  const locations = locationsStore.readAll();
-  const locByIp = Object.fromEntries(locations.map(l => [l.ip, l]));
-
-  const totalPageviews = all.length;
-  const totalSessions = new Set(all.map(v => v.sessionId)).size;
-
-  const pageCounts = {};
-  all.forEach(v => {
-    pageCounts[v.path] = (pageCounts[v.path] || 0) + 1;
-  });
-  const topPages = Object.entries(pageCounts)
-    .map(([path, count]) => ({ path, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 8);
-
-  const countryCounts = {};
-  all.forEach(v => {
-    const country = locationFor(v.ip, locByIp).country;
-    countryCounts[country] = (countryCounts[country] || 0) + 1;
-  });
-  const topCountries = Object.entries(countryCounts)
-    .map(([country, count]) => ({ country, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 8);
-
+// Les comptages sont faits par la base, sans recharger toutes les pages vues.
+router.get('/summary', async (req, res) => {
   const today = new Date();
   const days = [];
   for (let i = DAILY_RANGE - 1; i >= 0; i--) {
@@ -134,55 +101,86 @@ router.get('/summary', (req, res) => {
     days.push(d.toISOString().slice(0, 10));
   }
 
-  const viewsByDay = {};
-  const sessionsByDay = {};
-  all.forEach(v => {
-    const day = v.timestamp.slice(0, 10);
-    viewsByDay[day] = (viewsByDay[day] || 0) + 1;
-    if (!sessionsByDay[day]) sessionsByDay[day] = new Set();
-    sessionsByDay[day].add(v.sessionId);
-  });
+  const [totalPageviews, sessionsAgg, topPagesAgg, byIp, dailyAgg] = await Promise.all([
+    pageviews().countDocuments(),
+    pageviews().aggregate([{ $group: { _id: '$sessionId' } }, { $count: 'n' }]).toArray(),
+    pageviews()
+      .aggregate([{ $group: { _id: '$path', count: { $sum: 1 } } }, { $sort: { count: -1 } }, { $limit: 8 }])
+      .toArray(),
+    pageviews().aggregate([{ $group: { _id: '$ip', count: { $sum: 1 } } }]).toArray(),
+    pageviews()
+      .aggregate([
+        { $match: { timestamp: { $gte: days[0] } } },
+        {
+          $group: {
+            _id: { $substrBytes: ['$timestamp', 0, 10] },
+            views: { $sum: 1 },
+            sessions: { $addToSet: '$sessionId' }
+          }
+        }
+      ])
+      .toArray()
+  ]);
 
+  const locByIp = await locationsByIp(byIp.map(b => b._id));
+  const countryCounts = {};
+  byIp.forEach(({ _id: ip, count }) => {
+    const country = locationFor(ip, locByIp).country;
+    countryCounts[country] = (countryCounts[country] || 0) + count;
+  });
+  const topCountries = Object.entries(countryCounts)
+    .map(([country, count]) => ({ country, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 8);
+
+  const dailyByDate = Object.fromEntries(dailyAgg.map(d => [d._id, d]));
   const daily = days.map(date => ({
     date,
-    views: viewsByDay[date] || 0,
-    sessions: sessionsByDay[date] ? sessionsByDay[date].size : 0
+    views: dailyByDate[date]?.views || 0,
+    sessions: dailyByDate[date]?.sessions.length || 0
   }));
 
-  res.json({ totalPageviews, totalSessions, topPages, topCountries, daily });
+  res.json({
+    totalPageviews,
+    totalSessions: sessionsAgg[0]?.n || 0,
+    topPages: topPagesAgg.map(p => ({ path: p._id, count: p.count })),
+    topCountries,
+    daily
+  });
 });
 
 // GET /api/stats/visitors - détail des sessions récentes (parcours + localisation).
-router.get('/visitors', (req, res) => {
-  const all = pageviewsStore.readAll();
-  const locations = locationsStore.readAll();
-  const locByIp = Object.fromEntries(locations.map(l => [l.ip, l]));
+router.get('/visitors', async (req, res) => {
+  const sessions = await pageviews()
+    .aggregate([
+      { $sort: { timestamp: 1 } },
+      {
+        $group: {
+          _id: '$sessionId',
+          ip: { $first: '$ip' },
+          userAgent: { $first: '$userAgent' },
+          firstSeen: { $first: '$timestamp' },
+          lastSeen: { $last: '$timestamp' },
+          pages: { $push: { path: '$path', timestamp: '$timestamp' } }
+        }
+      },
+      { $sort: { lastSeen: -1 } },
+      { $limit: VISITOR_LIMIT }
+    ], { allowDiskUse: true })
+    .toArray();
 
-  const bySession = {};
-  all.forEach(v => {
-    if (!bySession[v.sessionId]) {
-      bySession[v.sessionId] = {
-        sessionId: v.sessionId,
-        ip: v.ip,
-        userAgent: v.userAgent,
-        location: locationFor(v.ip, locByIp),
-        firstSeen: v.timestamp,
-        lastSeen: v.timestamp,
-        pages: []
-      };
-    }
-    const session = bySession[v.sessionId];
-    if (v.timestamp > session.lastSeen) session.lastSeen = v.timestamp;
-    if (v.timestamp < session.firstSeen) session.firstSeen = v.timestamp;
-    session.pages.push({ path: v.path, timestamp: v.timestamp });
-  });
-
-  const visitors = Object.values(bySession)
-    .sort((a, b) => b.lastSeen.localeCompare(a.lastSeen))
-    .slice(0, VISITOR_LIMIT)
-    .map(v => ({ ...v, pages: v.pages.sort((a, b) => a.timestamp.localeCompare(b.timestamp)) }));
-
-  res.json(visitors);
+  const locByIp = await locationsByIp(sessions.map(s => s.ip));
+  res.json(
+    sessions.map(s => ({
+      sessionId: s._id,
+      ip: s.ip,
+      userAgent: s.userAgent,
+      location: locationFor(s.ip, locByIp),
+      firstSeen: s.firstSeen,
+      lastSeen: s.lastSeen,
+      pages: s.pages
+    }))
+  );
 });
 
 module.exports = router;

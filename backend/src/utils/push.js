@@ -1,38 +1,35 @@
-const fs = require('fs');
-const path = require('path');
 const webpush = require('web-push');
-const JsonStore = require('./jsonStore');
+const { col, getSetting, setSetting, NO_ID } = require('./db');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-const VAPID_PATH = path.join(DATA_DIR, 'push-vapid.json');
+const subscriptions = () => col('push_subscriptions');
+const pushHistory = () => col('push_history');
 
-const subscriptionsStore = new JsonStore(path.join(DATA_DIR, 'push-subscriptions.json'));
-const historyStore = new JsonStore(path.join(DATA_DIR, 'push-history.json'));
+let publicKey = null;
 
-// Clés VAPID : depuis l'environnement si fournies, sinon générées une fois et gardées
-// dans data/push-vapid.json. Elles ne doivent plus changer ensuite, sinon les abonnements
-// existants deviennent invalides.
-function loadVapidKeys() {
+// Clés VAPID : depuis l'environnement si fournies, sinon générées une fois et gardées en
+// base (réglage « push-vapid »). Elles ne doivent plus changer ensuite, sinon les
+// abonnements existants deviennent invalides.
+async function initPush() {
+  let keys;
   if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
-    return { publicKey: process.env.VAPID_PUBLIC_KEY, privateKey: process.env.VAPID_PRIVATE_KEY };
+    keys = { publicKey: process.env.VAPID_PUBLIC_KEY, privateKey: process.env.VAPID_PRIVATE_KEY };
+  } else {
+    keys = await getSetting('push-vapid', null);
+    if (!keys) {
+      keys = webpush.generateVAPIDKeys();
+      await setSetting('push-vapid', keys);
+    }
   }
-  if (fs.existsSync(VAPID_PATH)) {
-    return JSON.parse(fs.readFileSync(VAPID_PATH, 'utf-8'));
-  }
-  const keys = webpush.generateVAPIDKeys();
-  fs.writeFileSync(VAPID_PATH, JSON.stringify(keys, null, 2), 'utf-8');
-  return keys;
+  webpush.setVapidDetails(
+    process.env.VAPID_SUBJECT || `mailto:${process.env.MAIL_TO || 'fpmamelun77@gmail.com'}`,
+    keys.publicKey,
+    keys.privateKey
+  );
+  publicKey = keys.publicKey;
 }
 
-const vapidKeys = loadVapidKeys();
-webpush.setVapidDetails(
-  process.env.VAPID_SUBJECT || `mailto:${process.env.MAIL_TO || 'fpmamelun77@gmail.com'}`,
-  vapidKeys.publicKey,
-  vapidKeys.privateKey
-);
-
 function getPublicKey() {
-  return vapidKeys.publicKey;
+  return publicKey;
 }
 
 function isValidSubscription(sub) {
@@ -47,26 +44,31 @@ function isValidSubscription(sub) {
   );
 }
 
-function addSubscription(sub) {
-  const subs = subscriptionsStore.readAll().filter(s => s.endpoint !== sub.endpoint);
-  subs.push({ endpoint: sub.endpoint, keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth }, createdAt: new Date().toISOString() });
-  subscriptionsStore.writeAll(subs);
+async function addSubscription(sub) {
+  await subscriptions().updateOne(
+    { endpoint: sub.endpoint },
+    {
+      $set: { keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth } },
+      $setOnInsert: { endpoint: sub.endpoint, createdAt: new Date().toISOString() }
+    },
+    { upsert: true }
+  );
 }
 
-function removeSubscription(endpoint) {
-  subscriptionsStore.writeAll(subscriptionsStore.readAll().filter(s => s.endpoint !== endpoint));
+async function removeSubscription(endpoint) {
+  await subscriptions().deleteOne({ endpoint });
 }
 
 function countSubscriptions() {
-  return subscriptionsStore.readAll().length;
+  return subscriptions().countDocuments();
 }
 
-// Envoie { title, body, url, image? } à tous les abonnés. Les abonnements expirés
+// Envoie { title, body, url, image?, action? } à tous les abonnés. Les abonnements expirés
 // (navigateur désinstallé, permission retirée…) sont supprimés au passage.
 async function sendToAll(notification, meta) {
-  const subs = subscriptionsStore.readAll();
+  const subs = await subscriptions().find({}, NO_ID).toArray();
   const payload = JSON.stringify(notification);
-  const expired = new Set();
+  const expired = [];
   let sent = 0;
 
   await Promise.all(
@@ -75,15 +77,13 @@ async function sendToAll(notification, meta) {
         .sendNotification(sub, payload, { TTL: 24 * 60 * 60 })
         .then(() => sent++)
         .catch(err => {
-          if (err.statusCode === 404 || err.statusCode === 410) expired.add(sub.endpoint);
+          if (err.statusCode === 404 || err.statusCode === 410) expired.push(sub.endpoint);
           else console.error('Échec d\'envoi push', err.statusCode || err.message);
         })
     )
   );
 
-  if (expired.size) {
-    subscriptionsStore.writeAll(subscriptionsStore.readAll().filter(s => !expired.has(s.endpoint)));
-  }
+  if (expired.length) await subscriptions().deleteMany({ endpoint: { $in: expired } });
 
   const entry = {
     id: `push-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
@@ -95,14 +95,14 @@ async function sendToAll(notification, meta) {
     url: notification.url,
     destinataires: subs.length,
     envoyes: sent,
-    expires: expired.size
+    expires: expired.length
   };
-  historyStore.writeAll([...historyStore.readAll(), entry]);
+  await pushHistory().insertOne({ ...entry });
   return entry;
 }
 
 function getHistory() {
-  return [...historyStore.readAll()].sort((a, b) => b.date.localeCompare(a.date));
+  return pushHistory().find({}, NO_ID).sort({ date: -1 }).toArray();
 }
 
-module.exports = { getPublicKey, isValidSubscription, addSubscription, removeSubscription, countSubscriptions, sendToAll, getHistory };
+module.exports = { initPush, getPublicKey, isValidSubscription, addSubscription, removeSubscription, countSubscriptions, sendToAll, getHistory };

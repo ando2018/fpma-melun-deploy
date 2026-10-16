@@ -15,7 +15,9 @@ const authRoutes = require('./routes/auth.routes');
 const pushRoutes = require('./routes/push.routes');
 const liveRoutes = require('./routes/live.routes');
 
-const JsonStore = require('./utils/jsonStore');
+const { connectDb, col } = require('./utils/db');
+const { importJsonOnce } = require('./utils/importJson');
+const { initPush } = require('./utils/push');
 const { getBaseUrl } = require('./utils/baseUrl');
 const { annonceSlug } = require('./utils/annonceSlug');
 const { injectSocialMeta, buildDescription } = require('./utils/socialMeta');
@@ -59,8 +61,6 @@ const FRONTEND_INDEX = path.join(FRONTEND_DIST_PATH, 'index.html');
 if (fs.existsSync(FRONTEND_INDEX)) {
   app.use(express.static(FRONTEND_DIST_PATH));
 
-  const annonceStore = new JsonStore(path.join(__dirname, 'data', 'annonces.json'));
-
   // Envoie index.html en y injectant des balises Open Graph / Twitter Card dynamiques,
   // pour que le lien partagé (WhatsApp, Facebook, Messenger...) affiche le bon titre et
   // le bon lien au lieu de la page générique du site (sans image, volontairement).
@@ -71,14 +71,22 @@ if (fs.existsSync(FRONTEND_INDEX)) {
 
   // Fallback SPA : toute route qui n'est ni une API ni un fichier existant renvoie
   // index.html, pour laisser le Router Angular gérer l'URL côté client.
-  app.get('*', (req, res, next) => {
+  app.get('*', async (req, res, next) => {
     if (req.path.startsWith('/api') || req.path.startsWith('/storage')) {
       return next();
     }
+    try {
+      await sendPage(req, res);
+    } catch (err) {
+      next(err);
+    }
+  });
 
+  async function sendPage(req, res) {
     const articleMatch = req.path.match(/^\/vaovao\/article\/([^/]+)\/?$/);
     if (articleMatch) {
-      const annonce = annonceStore.readAll().find(a => annonceSlug(a.title) === articleMatch[1]);
+      const annonces = await col('annonces').find({}, { projection: { _id: 0, title: 1, description: 1 } }).toArray();
+      const annonce = annonces.find(a => annonceSlug(a.title) === articleMatch[1]);
       if (annonce) {
         return sendIndexWithMeta(req, res, {
           title: `${annonce.title} — FPMA Melun`,
@@ -89,16 +97,16 @@ if (fs.existsSync(FRONTEND_INDEX)) {
       }
     }
 
-    // Aperçu de partage d'un album Sary (titre de l'album).
+    // Aperçu de partage d'un album Sary : le lien est construit à partir du nom affiché.
     const albumMatch = req.path.match(/^\/sary\/album\/([^/]+)\/?$/);
     if (albumMatch) {
-      const albumsDir = path.join(__dirname, 'storage', 'sary');
-      const albums = fs.existsSync(albumsDir) ? fs.readdirSync(albumsDir) : [];
-      const album = albums.find(name => annonceSlug(name) === albumMatch[1]);
+      const albums = await col('sary_albums').find({}, { projection: { _id: 0, id: 1, nom: 1 } }).toArray();
+      const album = albums.find(a => annonceSlug(a.nom || a.id) === albumMatch[1] || a.id === albumMatch[1]);
       if (album) {
+        const nom = album.nom || album.id;
         return sendIndexWithMeta(req, res, {
-          title: `${album} — Sary FPMA Melun`,
-          description: `Album photos « ${album} » de la FPMA Melun.`,
+          title: `${nom} — Sary FPMA Melun`,
+          description: `Album photos « ${nom} » de la FPMA Melun.`,
           url: `${getBaseUrl(req)}${req.originalUrl}`
         });
       }
@@ -113,7 +121,7 @@ if (fs.existsSync(FRONTEND_INDEX)) {
     }
 
     res.sendFile(FRONTEND_INDEX);
-  });
+  }
 
   console.log(`Frontend Angular servi depuis ${FRONTEND_DIST_PATH}`);
 } else {
@@ -125,6 +133,23 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message || 'Erreur interne du serveur' });
 });
 
-app.listen(PORT, () => {
-  console.log(`FPMA backend à l'écoute sur http://localhost:${PORT}`);
+// La base doit être prête avant d'accepter des requêtes.
+async function start() {
+  await connectDb();
+  console.log(`MongoDB connecté (base « ${process.env.MONGODB_DB || 'fpma'} »)`);
+
+  const imported = await importJsonOnce();
+  if (imported) console.log('Anciennes données JSON importées dans MongoDB :', imported);
+
+  await initPush();
+
+  app.listen(PORT, () => {
+    console.log(`FPMA backend à l'écoute sur http://localhost:${PORT}`);
+  });
+}
+
+start().catch(err => {
+  console.error('Démarrage impossible :', err.message);
+  console.error('Vérifiez que MongoDB est lancé et que MONGODB_URI (fichier .env) est correct.');
+  process.exit(1);
 });

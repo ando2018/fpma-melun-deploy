@@ -5155,5 +5155,392 @@
     "ip": "::1",
     "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
     "timestamp": "2026-10-02T22:44:40.453Z"
+  },
+  {
+    "id": "pv-1791138641089-1465",
+    "path": "/",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:30:41.089Z"
+  },
+  {
+    "id": "pv-1791138650106-212",
+    "path": "/sary",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:30:50.106Z"
+  },
+  {
+    "id": "pv-1791138847965-9279",
+    "path": "/sary",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:34:07.965Z"
+  },
+  {
+    "id": "pv-1791138862767-6203",
+    "path": "/sary",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:34:22.768Z"
+  },
+  {
+    "id": "pv-1791138916065-8261",
+    "path": "/sary",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:35:16.065Z"
+  },
+  {
+    "id": "pv-1791138919730-5331",
+    "path": "/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:35:19.730Z"
+  },
+  {
+    "id": "pv-1791138948271-4271",
+    "path": "/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:35:48.271Z"
+  },
+  {
+    "id": "pv-1791138978110-6879",
+    "path": "/sary",
+    "sessionId": "sess-1791138978035-747089",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-10-04T18:36:18.110Z"
+  },
+  {
+    "id": "pv-1791138979063-3957",
+    "path": "/sary/album/amf-ny-antso",
+    "sessionId": "sess-1791138978035-747089",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-10-04T18:36:19.063Z"
+  },
+  {
+    "id": "pv-1791138979895-7654",
+    "path": "/sary/album/amf-ny-antso",
+    "sessionId": "sess-1791138979850-996505",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-10-04T18:36:19.895Z"
+  },
+  {
+    "id": "pv-1791138980670-5178",
+    "path": "/sary",
+    "sessionId": "sess-1791138979850-996505",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-10-04T18:36:20.670Z"
+  },
+  {
+    "id": "pv-1791138980856-4958",
+    "path": "/sary/album/amf-ny-antso",
+    "sessionId": "sess-1791138979850-996505",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-10-04T18:36:20.856Z"
+  },
+  {
+    "id": "pv-1791138981239-1098",
+    "path": "/sary/album/n-existe-pas",
+    "sessionId": "sess-1791138979850-996505",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-10-04T18:36:21.239Z"
+  },
+  {
+    "id": "pv-1791138998503-6355",
+    "path": "/sary",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:36:38.503Z"
+  },
+  {
+    "id": "pv-1791139002214-9013",
+    "path": "/sary/album/evenements",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:36:42.214Z"
+  },
+  {
+    "id": "pv-1791139004267-6894",
+    "path": "/sary",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:36:44.267Z"
+  },
+  {
+    "id": "pv-1791139105250-4242",
+    "path": "/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:38:25.250Z"
+  },
+  {
+    "id": "pv-1791139113597-9364",
+    "path": "/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:38:33.597Z"
+  },
+  {
+    "id": "pv-1791139125889-3181",
+    "path": "/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:38:45.889Z"
+  },
+  {
+    "id": "pv-1791139129541-456",
+    "path": "/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024?page=2",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:38:49.541Z"
+  },
+  {
+    "id": "pv-1791139131741-4836",
+    "path": "/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024?page=3",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:38:51.741Z"
+  },
+  {
+    "id": "pv-1791139133656-4786",
+    "path": "/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:38:53.656Z"
+  },
+  {
+    "id": "pv-1791139138836-8440",
+    "path": "/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024?page=2",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:38:58.836Z"
+  },
+  {
+    "id": "pv-1791139141690-8565",
+    "path": "/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:01.690Z"
+  },
+  {
+    "id": "pv-1791139157859-2943",
+    "path": "/",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:17.859Z"
+  },
+  {
+    "id": "pv-1791139159788-2413",
+    "path": "/vaovao",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:19.788Z"
+  },
+  {
+    "id": "pv-1791139160859-2294",
+    "path": "/ny-birao-sampana",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:20.859Z"
+  },
+  {
+    "id": "pv-1791139163764-5406",
+    "path": "/contact",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:23.764Z"
+  },
+  {
+    "id": "pv-1791139164164-9715",
+    "path": "/sary/album/concert-noel-sampana-sekoly-alahady-2024",
+    "sessionId": "sess-1791139164109-801056",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:24.164Z"
+  },
+  {
+    "id": "pv-1791139164858-3393",
+    "path": "/sary/album/concert-noel-sampana-sekoly-alahady-2024?page=2",
+    "sessionId": "sess-1791139164109-801056",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:24.858Z"
+  },
+  {
+    "id": "pv-1791139164894-8293",
+    "path": "/samihafa",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:24.894Z"
+  },
+  {
+    "id": "pv-1791139165436-7966",
+    "path": "/sary/album/concert-noel-sampana-sekoly-alahady-2024?page=2",
+    "sessionId": "sess-1791139164109-801056",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:25.436Z"
+  },
+  {
+    "id": "pv-1791139166393-2912",
+    "path": "/",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "http://localhost:4200/sary/album/alahadin-ny-sampana-sekoly-alahady-30062024",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:26.393Z"
+  },
+  {
+    "id": "pv-1791139166564-8945",
+    "path": "/sary/album/concert-noel-sampana-sekoly-alahady-2024?page=5",
+    "sessionId": "sess-1791139164109-801056",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:26.564Z"
+  },
+  {
+    "id": "pv-1791139183077-3327",
+    "path": "/login",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:43.077Z"
+  },
+  {
+    "id": "pv-1791139186164-3019",
+    "path": "/admin",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:39:46.164Z"
+  },
+  {
+    "id": "pv-1791139219557-6120",
+    "path": "/admin?tab=evenements",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:40:19.557Z"
+  },
+  {
+    "id": "pv-1791139234820-850",
+    "path": "/admin?tab=vaovao",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:40:34.820Z"
+  },
+  {
+    "id": "pv-1791139235757-122",
+    "path": "/admin?tab=evenements",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:40:35.757Z"
+  },
+  {
+    "id": "pv-1791139238326-1367",
+    "path": "/admin?tab=sary",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:40:38.326Z"
+  },
+  {
+    "id": "pv-1791139239212-191",
+    "path": "/admin?tab=diaporama",
+    "sessionId": "sess-1791138640803-530817",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-04T18:40:39.212Z"
+  },
+  {
+    "id": "pv-1792164425512-9217",
+    "path": "/",
+    "sessionId": "sess-1792164424911-201368",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-16T15:27:05.512Z"
+  },
+  {
+    "id": "pv-1792164557570-2670",
+    "path": "/",
+    "sessionId": "sess-1792164557433-53725",
+    "referrer": "",
+    "ip": "::1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "timestamp": "2026-10-16T15:29:17.570Z"
   }
 ]

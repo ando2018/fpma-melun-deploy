@@ -1,15 +1,13 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
+const asyncRouter = require('../utils/asyncRouter');
+const { getSetting, setSetting } = require('../utils/db');
 const { requireRole } = require('../utils/auth');
 
 // Direct vidéo en pair-à-pair (WebRTC) : la vidéo va directement de l'appareil qui filme
 // (admin) à chaque spectateur. Ce serveur ne fait que la mise en relation (échange des
 // descriptions de connexion) : aucune vidéo ne transite par lui et rien n'est enregistré.
 
-const router = express.Router();
+const router = asyncRouter();
 
-const CONFIG_PATH = path.join(__dirname, '..', 'data', 'live.json');
 const MAX_VIEWERS = Number(process.env.LIVE_MAX_VIEWERS) || 25;
 const VIEWER_TIMEOUT_MS = 20000;
 const BROADCASTER_TIMEOUT_MS = 20000;
@@ -17,16 +15,12 @@ const MAX_SDP_LENGTH = 30000;
 
 const DEFAULT_CONFIG = { title: 'Culte en direct', description: '', visible: false };
 
-function readConfig() {
-  try {
-    return { ...DEFAULT_CONFIG, ...JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8')) };
-  } catch {
-    return { ...DEFAULT_CONFIG };
-  }
+async function readConfig() {
+  return { ...DEFAULT_CONFIG, ...(await getSetting('live-config', {})) };
 }
 
 function writeConfig(config) {
-  fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2), 'utf-8');
+  return setSetting('live-config', config);
 }
 
 // État du direct en mémoire : une session est éphémère et n'a pas à survivre à un
@@ -68,9 +62,9 @@ function isValidSdp(sdp) {
 
 // ---------- Public (spectateurs) ----------
 
-router.get('/status', (req, res) => {
+router.get('/status', async (req, res) => {
   cleanup();
-  const config = readConfig();
+  const config = await readConfig();
   res.json({
     title: config.title,
     description: config.description,
@@ -82,9 +76,9 @@ router.get('/status', (req, res) => {
   });
 });
 
-router.post('/join', (req, res) => {
+router.post('/join', async (req, res) => {
   cleanup();
-  if (!state.onAir || !readConfig().visible) return res.status(409).json({ error: 'Aucun direct en cours.' });
+  if (!state.onAir || !(await readConfig()).visible) return res.status(409).json({ error: 'Aucun direct en cours.' });
   if (state.viewers.size >= MAX_VIEWERS) {
     return res.status(503).json({ error: 'Le direct est complet pour le moment, réessayez dans quelques minutes.' });
   }
@@ -119,12 +113,12 @@ router.post('/viewer/:id/leave', (req, res) => {
 
 const adminOnly = requireRole('admin');
 
-router.get('/config', adminOnly, (req, res) => {
-  res.json({ ...readConfig(), maxViewers: MAX_VIEWERS });
+router.get('/config', adminOnly, async (req, res) => {
+  res.json({ ...(await readConfig()), maxViewers: MAX_VIEWERS });
 });
 
-router.put('/config', adminOnly, (req, res) => {
-  const current = readConfig();
+router.put('/config', adminOnly, async (req, res) => {
+  const current = await readConfig();
   const title = req.body?.title !== undefined ? String(req.body.title).trim() : current.title;
   if (!title) return res.status(400).json({ error: 'Le titre est requis.' });
   if (title.length > 120) return res.status(400).json({ error: 'Titre trop long (120 caractères max).' });
@@ -133,7 +127,7 @@ router.put('/config', adminOnly, (req, res) => {
   const visible = req.body?.visible !== undefined ? req.body.visible === true : current.visible;
 
   const config = { title, description, visible };
-  writeConfig(config);
+  await writeConfig(config);
   res.json({ ...config, maxViewers: MAX_VIEWERS });
 });
 

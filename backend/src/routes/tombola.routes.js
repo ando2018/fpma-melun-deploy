@@ -1,18 +1,14 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const JsonStore = require('../utils/jsonStore');
+const asyncRouter = require('../utils/asyncRouter');
+const { col, NO_ID, isDuplicateKey } = require('../utils/db');
 const { requireRole } = require('../utils/auth');
 
-const router = express.Router();
+const router = asyncRouter();
 router.use(requireRole('admin', 'tombola'));
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-const LEGACY_CONFIG_PATH = path.join(DATA_DIR, 'tombola-config.json');
-const eventsStore = new JsonStore(path.join(DATA_DIR, 'tombola-events.json'));
-const ticketsStore = new JsonStore(path.join(DATA_DIR, 'tombola-tickets.json'));
-const drawsStore = new JsonStore(path.join(DATA_DIR, 'tombola-draws.json'));
-const historyStore = new JsonStore(path.join(DATA_DIR, 'tombola-history.json'));
+const events = () => col('tombola_events');
+const tickets = () => col('tombola_tickets');
+const draws = () => col('tombola_draws');
+const history = () => col('tombola_history');
 
 const PAYMENT_MODES = { cb: 'CB', especes: 'Espèces', cheque: 'Chèque' };
 
@@ -25,58 +21,28 @@ function formatEuros(amount) {
 }
 
 // Journal de toutes les actions d'un évènement (qui, quand, quoi).
-function logHistory(req, eventId, action, details) {
-  historyStore.writeAll([
-    ...historyStore.readAll(),
-    {
-      id: generateId('histo'),
-      eventId,
-      date: new Date().toISOString(),
-      utilisateur: req.user?.username || 'inconnu',
-      action,
-      details
-    }
-  ]);
+async function logHistory(req, eventId, action, details) {
+  await history().insertOne({
+    id: generateId('histo'),
+    eventId,
+    date: new Date().toISOString(),
+    utilisateur: req.user?.username || 'inconnu',
+    action,
+    details
+  });
 }
 
 function describeEvent(event) {
   return `${event.nom} — ${event.date}${event.lieu ? ` — ${event.lieu}` : ''} — ${event.totalTickets} billets à ${formatEuros(event.ticketPrice)}`;
 }
 
-// Avant les évènements, la tombola était unique (tombola-config.json) : on transforme
-// cette configuration en un premier évènement et on y rattache les billets/tirages.
-function migrateLegacyConfig() {
-  if (!fs.existsSync(LEGACY_CONFIG_PATH)) return;
-  let legacy = {};
-  try {
-    legacy = JSON.parse(fs.readFileSync(LEGACY_CONFIG_PATH, 'utf-8'));
-  } catch {
-    // configuration illisible : valeurs par défaut ci-dessous
-  }
-
-  const event = {
-    id: generateId('tombola'),
-    nom: legacy.eventName || 'Tombola FPMA Melun',
-    date: new Date().toISOString().slice(0, 10),
-    lieu: '',
-    totalTickets: Number.isInteger(legacy.totalTickets) ? legacy.totalTickets : 300,
-    ticketPrice: Number.isFinite(legacy.ticketPrice) ? legacy.ticketPrice : 2,
-    createdAt: new Date().toISOString()
-  };
-  eventsStore.writeAll([...eventsStore.readAll(), event]);
-  ticketsStore.writeAll(ticketsStore.readAll().map(t => (t.eventId ? t : { ...t, eventId: event.id })));
-  drawsStore.writeAll(drawsStore.readAll().map(d => (d.eventId ? d : { ...d, eventId: event.id })));
-  fs.unlinkSync(LEGACY_CONFIG_PATH);
-}
-migrateLegacyConfig();
-
 function findEvent(id) {
-  return eventsStore.readAll().find(e => e.id === id);
+  return events().findOne({ id }, NO_ID);
 }
 
-function withStats(event) {
-  const tickets = ticketsStore.readAll().filter(t => t.eventId === event.id && !t.annule);
-  return { ...event, ticketsVendus: tickets.length };
+async function withStats(event) {
+  const ticketsVendus = await tickets().countDocuments({ eventId: event.id, annule: { $ne: true } });
+  return { ...event, ticketsVendus };
 }
 
 // Valide le corps d'une création/modification d'évènement. `current` = évènement
@@ -105,82 +71,79 @@ function parseEventBody(body, current) {
 // ---------- Évènements ----------
 
 // GET /api/tombola/events - du plus récent au plus ancien
-router.get('/events', (req, res) => {
-  const events = [...eventsStore.readAll()].sort((a, b) => b.date.localeCompare(a.date));
-  res.json(events.map(withStats));
+router.get('/events', async (req, res) => {
+  const list = await events().find({}, NO_ID).sort({ date: -1 }).toArray();
+  res.json(await Promise.all(list.map(withStats)));
 });
 
-router.get('/events/:id', (req, res) => {
-  const event = findEvent(req.params.id);
+router.get('/events/:id', async (req, res) => {
+  const event = await findEvent(req.params.id);
   if (!event) return res.status(404).json({ error: 'Évènement introuvable' });
-  res.json(withStats(event));
+  res.json(await withStats(event));
 });
 
-router.post('/events', (req, res) => {
+router.post('/events', async (req, res) => {
   const parsed = parseEventBody(req.body, { totalTickets: 300, ticketPrice: 2 });
   if (parsed.error) return res.status(400).json({ error: parsed.error });
 
   const event = { id: generateId('tombola'), ...parsed.value, createdAt: new Date().toISOString() };
-  eventsStore.writeAll([...eventsStore.readAll(), event]);
-  logHistory(req, event.id, 'creation_evenement', describeEvent(event));
-  res.status(201).json(withStats(event));
+  await events().insertOne({ ...event });
+  await logHistory(req, event.id, 'creation_evenement', describeEvent(event));
+  res.status(201).json(await withStats(event));
 });
 
-router.put('/events/:id', (req, res) => {
-  const events = eventsStore.readAll();
-  const index = events.findIndex(e => e.id === req.params.id);
-  if (index === -1) return res.status(404).json({ error: 'Évènement introuvable' });
+router.put('/events/:id', async (req, res) => {
+  const current = await findEvent(req.params.id);
+  if (!current) return res.status(404).json({ error: 'Évènement introuvable' });
 
-  const parsed = parseEventBody(req.body, events[index]);
+  const parsed = parseEventBody(req.body, current);
   if (parsed.error) return res.status(400).json({ error: parsed.error });
 
-  const highestSold = ticketsStore
-    .readAll()
-    .filter(t => t.eventId === req.params.id)
-    .reduce((max, t) => Math.max(max, t.numero), 0);
-  if (parsed.value.totalTickets < highestSold) {
-    return res.status(400).json({ error: `Impossible : le billet n°${highestSold} a déjà été vendu.` });
+  const highest = await tickets().find({ eventId: req.params.id }).sort({ numero: -1 }).limit(1).next();
+  if (highest && parsed.value.totalTickets < highest.numero) {
+    return res.status(400).json({ error: `Impossible : le billet n°${highest.numero} a déjà été vendu.` });
   }
 
-  events[index] = { ...events[index], ...parsed.value };
-  eventsStore.writeAll(events);
-  logHistory(req, events[index].id, 'modification_evenement', describeEvent(events[index]));
-  res.json(withStats(events[index]));
+  const updated = await events().findOneAndUpdate(
+    { id: req.params.id },
+    { $set: parsed.value },
+    { returnDocument: 'after', ...NO_ID }
+  );
+  await logHistory(req, updated.id, 'modification_evenement', describeEvent(updated));
+  res.json(await withStats(updated));
 });
 
 // DELETE /api/tombola/events/:id - supprime l'évènement avec ses billets, tirages et
 // son historique
-router.delete('/events/:id', (req, res) => {
-  const events = eventsStore.readAll();
-  const filtered = events.filter(e => e.id !== req.params.id);
-  if (filtered.length === events.length) return res.status(404).json({ error: 'Évènement introuvable' });
+router.delete('/events/:id', async (req, res) => {
+  const { deletedCount } = await events().deleteOne({ id: req.params.id });
+  if (!deletedCount) return res.status(404).json({ error: 'Évènement introuvable' });
 
-  eventsStore.writeAll(filtered);
-  ticketsStore.writeAll(ticketsStore.readAll().filter(t => t.eventId !== req.params.id));
-  drawsStore.writeAll(drawsStore.readAll().filter(d => d.eventId !== req.params.id));
-  historyStore.writeAll(historyStore.readAll().filter(h => h.eventId !== req.params.id));
+  await Promise.all([
+    tickets().deleteMany({ eventId: req.params.id }),
+    draws().deleteMany({ eventId: req.params.id }),
+    history().deleteMany({ eventId: req.params.id })
+  ]);
   res.status(204).end();
 });
 
 // GET /api/tombola/events/:id/history - journal des actions, du plus récent au plus ancien
-router.get('/events/:id/history', (req, res) => {
-  const history = historyStore.readAll().filter(h => h.eventId === req.params.id);
-  res.json(history.sort((a, b) => b.date.localeCompare(a.date)));
+router.get('/events/:id/history', async (req, res) => {
+  res.json(await history().find({ eventId: req.params.id }, NO_ID).sort({ date: -1 }).toArray());
 });
 
 // ---------- Billets ----------
 
 // GET /api/tombola/events/:id/tickets - billets de l'évènement, triés par numéro
-router.get('/events/:id/tickets', (req, res) => {
-  const tickets = ticketsStore.readAll().filter(t => t.eventId === req.params.id);
-  res.json(tickets.sort((a, b) => a.numero - b.numero));
+router.get('/events/:id/tickets', async (req, res) => {
+  res.json(await tickets().find({ eventId: req.params.id }, NO_ID).sort({ numero: 1 }).toArray());
 });
 
 // POST /api/tombola/events/:id/tickets - vente d'un ou plusieurs billets à un même
 // acheteur ({ numeros: [..], nom, telephone, modePaiement }). Tout ou rien : si un seul
 // numéro est déjà pris, aucun billet n'est vendu.
-router.post('/events/:id/tickets', (req, res) => {
-  const event = findEvent(req.params.id);
+router.post('/events/:id/tickets', async (req, res) => {
+  const event = await findEvent(req.params.id);
   if (!event) return res.status(404).json({ error: 'Évènement introuvable' });
 
   const { numeros, nom, telephone, modePaiement } = req.body;
@@ -201,14 +164,14 @@ router.post('/events/:id/tickets', (req, res) => {
     return res.status(400).json({ error: 'Le numéro de téléphone est requis.' });
   }
 
-  const tickets = ticketsStore.readAll();
-  const taken = new Set(tickets.filter(t => t.eventId === event.id).map(t => t.numero));
-  const conflicts = numerosInt.filter(n => taken.has(n));
-  if (conflicts.length) {
-    return res.status(409).json({
-      error: `Déjà attribué${conflicts.length > 1 ? 's' : ''} : n°${conflicts.join(', ')}.`,
-      conflicts
-    });
+  const conflictMessage = conflicts => ({
+    error: `Déjà attribué${conflicts.length > 1 ? 's' : ''} : n°${conflicts.join(', ')}.`,
+    conflicts
+  });
+
+  const taken = await tickets().find({ eventId: event.id, numero: { $in: numerosInt } }).toArray();
+  if (taken.length) {
+    return res.status(409).json(conflictMessage(taken.map(t => t.numero).sort((a, b) => a - b)));
   }
 
   const createdAt = new Date().toISOString();
@@ -226,10 +189,19 @@ router.post('/events/:id/tickets', (req, res) => {
     createdAt,
     annule: false
   }));
-  ticketsStore.writeAll([...tickets, ...created]);
+
+  try {
+    await tickets().insertMany(created.map(t => ({ ...t })), { ordered: true });
+  } catch (err) {
+    if (!isDuplicateKey(err)) throw err;
+    // Un autre vendeur a pris un de ces numéros à l'instant : on annule toute la vente.
+    await tickets().deleteMany({ venteId });
+    const nowTaken = await tickets().find({ eventId: event.id, numero: { $in: numerosInt } }).toArray();
+    return res.status(409).json(conflictMessage(nowTaken.map(t => t.numero).sort((a, b) => a - b)));
+  }
 
   const montant = created.length * event.ticketPrice;
-  logHistory(
+  await logHistory(
     req,
     event.id,
     'vente',
@@ -241,14 +213,14 @@ router.post('/events/:id/tickets', (req, res) => {
 // PATCH /api/tombola/tickets/:id/annuler - annule un billet (ou le réactive). Le billet
 // reste dans la liste : son numéro ne redevient jamais disponible, pour éviter de le
 // revendre par erreur.
-router.patch('/tickets/:id/annuler', (req, res) => {
-  const tickets = ticketsStore.readAll();
-  const index = tickets.findIndex(t => t.id === req.params.id);
-  if (index === -1) return res.status(404).json({ error: 'Billet introuvable' });
-  const ticket = tickets[index];
-  ticket.annule = !ticket.annule;
-  ticketsStore.writeAll(tickets);
-  logHistory(
+router.patch('/tickets/:id/annuler', async (req, res) => {
+  const ticket = await tickets().findOneAndUpdate(
+    { id: req.params.id },
+    [{ $set: { annule: { $not: [{ $eq: ['$annule', true] }] } } }],
+    { returnDocument: 'after', ...NO_ID }
+  );
+  if (!ticket) return res.status(404).json({ error: 'Billet introuvable' });
+  await logHistory(
     req,
     ticket.eventId,
     ticket.annule ? 'annulation_billet' : 'reactivation_billet',
@@ -260,40 +232,28 @@ router.patch('/tickets/:id/annuler', (req, res) => {
 // ---------- Tirages ----------
 
 function eventDraws(eventId) {
-  return drawsStore
-    .readAll()
-    .filter(d => d.eventId === eventId)
-    .sort((a, b) => new Date(a.drawnAt) - new Date(b.drawnAt));
+  return draws().find({ eventId }, NO_ID).sort({ drawnAt: 1 }).toArray();
 }
 
 function setScreenDraw(eventId, drawId) {
-  const events = eventsStore.readAll();
-  const index = events.findIndex(e => e.id === eventId);
-  if (index === -1) return;
-  events[index].screenDrawId = drawId;
-  eventsStore.writeAll(events);
+  return events().updateOne({ id: eventId }, { $set: { screenDrawId: drawId } });
 }
 
 // GET /api/tombola/events/:id/draws - gagnants dans l'ordre du tirage
-router.get('/events/:id/draws', (req, res) => {
-  res.json(eventDraws(req.params.id));
+router.get('/events/:id/draws', async (req, res) => {
+  res.json(await eventDraws(req.params.id));
 });
 
 // POST /api/tombola/events/:id/draws - enregistre le numéro sorti de l'urne ({ numero })
 // comme gagnant et l'envoie sur l'écran de projection.
-router.post('/events/:id/draws', (req, res) => {
-  const event = findEvent(req.params.id);
+router.post('/events/:id/draws', async (req, res) => {
+  const event = await findEvent(req.params.id);
   if (!event) return res.status(404).json({ error: 'Évènement introuvable' });
 
   const numero = Number(req.body?.numero);
-  const ticket = ticketsStore.readAll().find(t => t.eventId === event.id && t.numero === numero);
+  const ticket = await tickets().findOne({ eventId: event.id, numero });
   if (!ticket) return res.status(400).json({ error: `Le numéro ${req.body?.numero} n'a pas été vendu.` });
   if (ticket.annule) return res.status(400).json({ error: `Le billet n°${numero} est annulé.` });
-
-  const draws = drawsStore.readAll();
-  if (draws.some(d => d.eventId === event.id && d.numero === numero)) {
-    return res.status(409).json({ error: `Le numéro ${numero} a déjà gagné.` });
-  }
 
   const draw = {
     id: generateId('tirage'),
@@ -303,32 +263,35 @@ router.post('/events/:id/draws', (req, res) => {
     telephone: ticket.telephone,
     drawnAt: new Date().toISOString()
   };
-  drawsStore.writeAll([...draws, draw]);
-  setScreenDraw(event.id, draw.id);
-  const rang = draws.filter(d => d.eventId === event.id).length + 1;
-  logHistory(req, event.id, 'tirage', `${rang}${rang === 1 ? 'er' : 'e'} tiré : n°${numero} — ${ticket.nom}`);
+  try {
+    await draws().insertOne({ ...draw });
+  } catch (err) {
+    if (isDuplicateKey(err)) return res.status(409).json({ error: `Le numéro ${numero} a déjà gagné.` });
+    throw err;
+  }
+  await setScreenDraw(event.id, draw.id);
+  const rang = await draws().countDocuments({ eventId: event.id });
+  await logHistory(req, event.id, 'tirage', `${rang}${rang === 1 ? 'er' : 'e'} tiré : n°${numero} — ${ticket.nom}`);
   res.status(201).json(draw);
 });
 
 // DELETE /api/tombola/draws/:id - annule un tirage, le numéro redevient éligible. S'il
 // était affiché sur l'écran de projection, l'écran se vide.
-router.delete('/draws/:id', (req, res) => {
-  const draws = drawsStore.readAll();
-  const draw = draws.find(d => d.id === req.params.id);
+router.delete('/draws/:id', async (req, res) => {
+  const draw = await draws().findOneAndDelete({ id: req.params.id }, NO_ID);
   if (!draw) return res.status(404).json({ error: 'Tirage introuvable' });
 
-  drawsStore.writeAll(draws.filter(d => d.id !== draw.id));
-  if (findEvent(draw.eventId)?.screenDrawId === draw.id) setScreenDraw(draw.eventId, null);
-  logHistory(req, draw.eventId, 'annulation_tirage', `N°${draw.numero} — ${draw.nom}`);
+  await events().updateOne({ id: draw.eventId, screenDrawId: draw.id }, { $set: { screenDrawId: null } });
+  await logHistory(req, draw.eventId, 'annulation_tirage', `N°${draw.numero} — ${draw.nom}`);
   res.status(204).end();
 });
 
 // GET /api/tombola/events/:id/screen - état de l'écran de projection (sans téléphones)
-router.get('/events/:id/screen', (req, res) => {
-  const event = findEvent(req.params.id);
+router.get('/events/:id/screen', async (req, res) => {
+  const event = await findEvent(req.params.id);
   if (!event) return res.status(404).json({ error: 'Évènement introuvable' });
 
-  const winners = eventDraws(event.id).map(d => ({ drawId: d.id, numero: d.numero, nom: d.nom }));
+  const winners = (await eventDraws(event.id)).map(d => ({ drawId: d.id, numero: d.numero, nom: d.nom }));
   res.json({
     nom: event.nom,
     totalTickets: event.totalTickets,
@@ -340,16 +303,17 @@ router.get('/events/:id/screen', (req, res) => {
 
 // PATCH /api/tombola/events/:id/screen - réglages de l'écran de projection
 // ({ showWinners: boolean } : afficher ou masquer la liste des gagnants)
-router.patch('/events/:id/screen', (req, res) => {
-  const events = eventsStore.readAll();
-  const index = events.findIndex(e => e.id === req.params.id);
-  if (index === -1) return res.status(404).json({ error: 'Évènement introuvable' });
+router.patch('/events/:id/screen', async (req, res) => {
   if (typeof req.body?.showWinners !== 'boolean') {
     return res.status(400).json({ error: 'showWinners doit valoir true ou false.' });
   }
-  events[index].screenShowWinners = req.body.showWinners;
-  eventsStore.writeAll(events);
-  res.json({ showWinners: events[index].screenShowWinners });
+  const updated = await events().findOneAndUpdate(
+    { id: req.params.id },
+    { $set: { screenShowWinners: req.body.showWinners } },
+    { returnDocument: 'after', ...NO_ID }
+  );
+  if (!updated) return res.status(404).json({ error: 'Évènement introuvable' });
+  res.json({ showWinners: updated.screenShowWinners });
 });
 
 module.exports = router;

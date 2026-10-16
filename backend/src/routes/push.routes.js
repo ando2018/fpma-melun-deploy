@@ -1,13 +1,11 @@
-const express = require('express');
-const path = require('path');
-const JsonStore = require('../utils/jsonStore');
+const asyncRouter = require('../utils/asyncRouter');
+const { col, NO_ID } = require('../utils/db');
 const { requireRole } = require('../utils/auth');
 const { annonceSlug } = require('../utils/annonceSlug');
 const { toAbsoluteUrl } = require('../utils/baseUrl');
 const push = require('../utils/push');
 
-const router = express.Router();
-const annoncesStore = new JsonStore(path.join(__dirname, '..', 'data', 'annonces.json'));
+const router = asyncRouter();
 
 function stripHtml(value) {
   return String(value || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
@@ -23,15 +21,15 @@ router.get('/public-key', (req, res) => {
   res.json({ publicKey: push.getPublicKey() });
 });
 
-router.post('/subscribe', (req, res) => {
+router.post('/subscribe', async (req, res) => {
   const sub = req.body?.subscription;
   if (!push.isValidSubscription(sub)) return res.status(400).json({ error: 'Abonnement invalide.' });
-  push.addSubscription(sub);
+  await push.addSubscription(sub);
   res.status(201).json({ ok: true });
 });
 
-router.post('/unsubscribe', (req, res) => {
-  if (typeof req.body?.endpoint === 'string') push.removeSubscription(req.body.endpoint);
+router.post('/unsubscribe', async (req, res) => {
+  if (typeof req.body?.endpoint === 'string') await push.removeSubscription(req.body.endpoint);
   res.json({ ok: true });
 });
 
@@ -39,13 +37,14 @@ router.post('/unsubscribe', (req, res) => {
 
 const adminOnly = requireRole('admin');
 
-router.get('/stats', adminOnly, (req, res) => {
-  res.json({ abonnes: push.countSubscriptions(), historique: push.getHistory() });
+router.get('/stats', adminOnly, async (req, res) => {
+  const [abonnes, historique] = await Promise.all([push.countSubscriptions(), push.getHistory()]);
+  res.json({ abonnes, historique });
 });
 
 // POST /api/push/article/:id - notifie les abonnés de la publication d'un article
 router.post('/article/:id', adminOnly, async (req, res) => {
-  const annonce = annoncesStore.readAll().find(a => a.id === req.params.id);
+  const annonce = await col('annonces').findOne({ id: req.params.id }, NO_ID);
   if (!annonce) return res.status(404).json({ error: 'Article introuvable' });
   if (annonce.masque) return res.status(400).json({ error: 'Article masqué : aucune notification envoyée.' });
 

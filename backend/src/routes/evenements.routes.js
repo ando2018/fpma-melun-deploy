@@ -1,12 +1,12 @@
-const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
-const JsonStore = require('../utils/jsonStore');
+const asyncRouter = require('../utils/asyncRouter');
+const { col, NO_ID } = require('../utils/db');
 const { toAbsoluteUrl } = require('../utils/baseUrl');
 
-const router = express.Router();
-const store = new JsonStore(path.join(__dirname, '..', 'data', 'evenements.json'));
+const router = asyncRouter();
+const evenements = () => col('evenements');
 
 const IMAGE_EXT = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
 const UPLOAD_DIR = path.join(__dirname, '..', 'storage', 'evenements');
@@ -45,6 +45,11 @@ function generateId() {
   return `evenement-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 }
 
+function editableFields(body) {
+  const { id, _id, ...fields } = body || {};
+  return fields;
+}
+
 // Résout le champ "image" (chemin relatif /storage/... stocké) en URL absolue selon
 // la requête en cours — évite de figer un host/port dans les données stockées.
 function withAbsoluteImage(evenement, req) {
@@ -60,60 +65,62 @@ router.post('/upload-image', upload.single('file'), (req, res) => {
   res.status(201).json({ url: relativeUrl });
 });
 
+// Ordre d'origine conservé (le plus récemment ajouté en premier), comme avant la base.
+const NEWEST_FIRST = { _id: -1 };
+
 // GET /api/evenements - liste publique (sans les évènements masqués)
-router.get('/', (req, res) => {
-  const evenements = store.readAll().filter(e => !e.masque);
-  res.json(evenements.map(e => withAbsoluteImage(e, req)));
+router.get('/', async (req, res) => {
+  const list = await evenements().find({ masque: { $ne: true } }, NO_ID).sort(NEWEST_FIRST).toArray();
+  res.json(list.map(e => withAbsoluteImage(e, req)));
 });
 
 // GET /api/evenements/all - liste complète (admin), y compris masqués
-router.get('/all', (req, res) => {
-  res.json(store.readAll().map(e => withAbsoluteImage(e, req)));
+router.get('/all', async (req, res) => {
+  const list = await evenements().find({}, NO_ID).sort(NEWEST_FIRST).toArray();
+  res.json(list.map(e => withAbsoluteImage(e, req)));
 });
 
 // GET /api/evenements/:id
-router.get('/:id', (req, res) => {
-  const evenement = store.readAll().find(e => e.id === req.params.id);
+router.get('/:id', async (req, res) => {
+  const evenement = await evenements().findOne({ id: req.params.id }, NO_ID);
   if (!evenement) return res.status(404).json({ error: 'Évènement introuvable' });
   res.json(withAbsoluteImage(evenement, req));
 });
 
 // POST /api/evenements
-router.post('/', (req, res) => {
-  const all = store.readAll();
-  const evenement = { ...req.body, id: generateId() };
-  all.unshift(evenement);
-  store.writeAll(all);
+router.post('/', async (req, res) => {
+  const evenement = { ...editableFields(req.body), id: generateId() };
+  await evenements().insertOne({ ...evenement });
   res.status(201).json(evenement);
 });
 
 // PUT /api/evenements/:id
-router.put('/:id', (req, res) => {
-  const all = store.readAll();
-  const index = all.findIndex(e => e.id === req.params.id);
-  if (index === -1) return res.status(404).json({ error: 'Évènement introuvable' });
-  all[index] = { ...all[index], ...req.body, id: all[index].id };
-  store.writeAll(all);
-  res.json(all[index]);
+router.put('/:id', async (req, res) => {
+  const updated = await evenements().findOneAndUpdate(
+    { id: req.params.id },
+    { $set: editableFields(req.body) },
+    { returnDocument: 'after', ...NO_ID }
+  );
+  if (!updated) return res.status(404).json({ error: 'Évènement introuvable' });
+  res.json(updated);
 });
 
 // DELETE /api/evenements/:id
-router.delete('/:id', (req, res) => {
-  const all = store.readAll();
-  const filtered = all.filter(e => e.id !== req.params.id);
-  if (filtered.length === all.length) return res.status(404).json({ error: 'Évènement introuvable' });
-  store.writeAll(filtered);
+router.delete('/:id', async (req, res) => {
+  const { deletedCount } = await evenements().deleteOne({ id: req.params.id });
+  if (!deletedCount) return res.status(404).json({ error: 'Évènement introuvable' });
   res.status(204).end();
 });
 
 // PATCH /api/evenements/:id/masque - bascule masqué/visible
-router.patch('/:id/masque', (req, res) => {
-  const all = store.readAll();
-  const index = all.findIndex(e => e.id === req.params.id);
-  if (index === -1) return res.status(404).json({ error: 'Évènement introuvable' });
-  all[index].masque = !all[index].masque;
-  store.writeAll(all);
-  res.json(all[index]);
+router.patch('/:id/masque', async (req, res) => {
+  const updated = await evenements().findOneAndUpdate(
+    { id: req.params.id },
+    [{ $set: { masque: { $not: [{ $eq: ['$masque', true] }] } } }],
+    { returnDocument: 'after', ...NO_ID }
+  );
+  if (!updated) return res.status(404).json({ error: 'Évènement introuvable' });
+  res.json(updated);
 });
 
 module.exports = router;
