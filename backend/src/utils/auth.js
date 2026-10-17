@@ -9,7 +9,7 @@ const SECRET = process.env.AUTH_SECRET || crypto.randomBytes(32).toString('hex')
 
 // Onglets de l'administration auxquels on peut donner accès. Un administrateur les a
 // tous, plus la gestion des utilisateurs.
-const ADMIN_TABS = ['vaovao', 'direct', 'evenements', 'sary', 'diaporama', 'notifications', 'messages', 'stats', 'tombola'];
+const ADMIN_TABS = ['vaovao', 'direct', 'evenements', 'banniere', 'sary', 'diaporama', 'notifications', 'messages', 'stats', 'tombola'];
 
 function hashPassword(password) {
   const salt = crypto.randomBytes(16).toString('hex');
