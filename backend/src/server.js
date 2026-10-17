@@ -21,7 +21,7 @@ const { importJsonOnce } = require('./utils/importJson');
 const { initPush } = require('./utils/push');
 const { getBaseUrl } = require('./utils/baseUrl');
 const { annonceSlug } = require('./utils/annonceSlug');
-const { injectSocialMeta, buildDescription } = require('./utils/socialMeta');
+const { injectSocialMeta, buildDescription, articleImage, versetImage } = require('./utils/socialMeta');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -87,13 +87,14 @@ if (fs.existsSync(FRONTEND_INDEX)) {
   async function sendPage(req, res) {
     const articleMatch = req.path.match(/^\/vaovao\/article\/([^/]+)\/?$/);
     if (articleMatch) {
-      const annonces = await col('annonces').find({}, { projection: { _id: 0, title: 1, description: 1 } }).toArray();
+      const annonces = await col('annonces').find({}, { projection: { _id: 0, title: 1, description: 1, image: 1, videoUrl: 1 } }).toArray();
       const annonce = annonces.find(a => annonceSlug(a.title) === articleMatch[1]);
       if (annonce) {
         return sendIndexWithMeta(req, res, {
           title: `${annonce.title} — FPMA Melun`,
           description: buildDescription(annonce.description) || 'Actualités de la FPMA Melun.',
           url: `${getBaseUrl(req)}${req.originalUrl}`,
+          image: articleImage(annonce, getBaseUrl(req)),
           type: 'article'
         });
       }
@@ -118,7 +119,8 @@ if (fs.existsSync(FRONTEND_INDEX)) {
       return sendIndexWithMeta(req, res, {
         title: 'Verset du jour — FPMA Melun',
         description: 'Découvrez le verset du jour de la FPMA Melun.',
-        url: `${getBaseUrl(req)}${req.originalUrl}`
+        url: `${getBaseUrl(req)}${req.originalUrl}`,
+        image: versetImage()
       });
     }
 
