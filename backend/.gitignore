@@ -1,6 +1,7 @@
 node_modules/
 npm-debug.log*
 .env
+.angular/
 
 # Clé privée des notifications push et liste des abonnés (données personnelles)
 src/data/push-vapid.json

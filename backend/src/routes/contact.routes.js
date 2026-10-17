@@ -1,9 +1,12 @@
 const nodemailer = require('nodemailer');
 const asyncRouter = require('../utils/asyncRouter');
 const { col, NO_ID } = require('../utils/db');
+const { requireTab } = require('../utils/auth');
 
 const router = asyncRouter();
 const messages = () => col('messages');
+// Envoi du formulaire public ; lecture des messages réservée à l'onglet Boîte mail.
+const canRead = requireTab('messages');
 
 function isSmtpConfigured() {
   return !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
@@ -63,12 +66,12 @@ router.post('/', async (req, res) => {
 });
 
 // GET /api/contact - liste des messages reçus (admin), du plus récent au plus ancien
-router.get('/', async (req, res) => {
+router.get('/', canRead, async (req, res) => {
   res.json(await messages().find({}, NO_ID).sort({ receivedAt: -1, _id: -1 }).toArray());
 });
 
 // PATCH /api/contact/:id/lu - marque un message comme lu
-router.patch('/:id/lu', async (req, res) => {
+router.patch('/:id/lu', canRead, async (req, res) => {
   const updated = await messages().findOneAndUpdate(
     { id: req.params.id },
     { $set: { lu: true } },
@@ -79,7 +82,7 @@ router.patch('/:id/lu', async (req, res) => {
 });
 
 // DELETE /api/contact/:id - supprime un message
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', canRead, async (req, res) => {
   const { deletedCount } = await messages().deleteOne({ id: req.params.id });
   if (!deletedCount) return res.status(404).json({ error: 'Message introuvable' });
   res.status(204).end();

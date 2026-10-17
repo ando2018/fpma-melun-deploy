@@ -1,6 +1,6 @@
 const asyncRouter = require('../utils/asyncRouter');
 const { col, NO_ID } = require('../utils/db');
-const { requireRole } = require('../utils/auth');
+const { requireTab } = require('../utils/auth');
 const { annonceSlug } = require('../utils/annonceSlug');
 const { toAbsoluteUrl } = require('../utils/baseUrl');
 const push = require('../utils/push');
@@ -35,15 +35,18 @@ router.post('/unsubscribe', async (req, res) => {
 
 // ---------- Admin ----------
 
-const adminOnly = requireRole('admin');
+// Notifier un article se fait depuis l'onglet Vaovao ; annoncer un direct depuis l'onglet Direct.
+const canSeeStats = requireTab('notifications', 'vaovao', 'direct');
+const canNotifyArticle = requireTab('notifications', 'vaovao');
+const canSend = requireTab('notifications', 'direct');
 
-router.get('/stats', adminOnly, async (req, res) => {
+router.get('/stats', canSeeStats, async (req, res) => {
   const [abonnes, historique] = await Promise.all([push.countSubscriptions(), push.getHistory()]);
   res.json({ abonnes, historique });
 });
 
 // POST /api/push/article/:id - notifie les abonnés de la publication d'un article
-router.post('/article/:id', adminOnly, async (req, res) => {
+router.post('/article/:id', canNotifyArticle, async (req, res) => {
   const annonce = await col('annonces').findOne({ id: req.params.id }, NO_ID);
   if (!annonce) return res.status(404).json({ error: 'Article introuvable' });
   if (annonce.masque) return res.status(400).json({ error: 'Article masqué : aucune notification envoyée.' });
@@ -63,7 +66,7 @@ router.post('/article/:id', adminOnly, async (req, res) => {
 });
 
 // POST /api/push/send - notification d'information libre ({ title, body, url? })
-router.post('/send', adminOnly, async (req, res) => {
+router.post('/send', canSend, async (req, res) => {
   const title = String(req.body?.title || '').trim();
   const body = String(req.body?.body || '').trim();
   // Sans lien explicite, une adresse écrite dans la description sert de lien au clic.

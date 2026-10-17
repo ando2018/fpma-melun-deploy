@@ -14,6 +14,7 @@ const tombolaRoutes = require('./routes/tombola.routes');
 const authRoutes = require('./routes/auth.routes');
 const pushRoutes = require('./routes/push.routes');
 const liveRoutes = require('./routes/live.routes');
+const usersRoutes = require('./routes/users.routes');
 
 const { connectDb, col } = require('./utils/db');
 const { importJsonOnce } = require('./utils/importJson');
@@ -47,6 +48,7 @@ app.use('/api/tombola', tombolaRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/push', pushRoutes);
 app.use('/api/live', liveRoutes);
+app.use('/api/users', usersRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 

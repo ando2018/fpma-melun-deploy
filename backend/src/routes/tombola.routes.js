@@ -1,9 +1,9 @@
 const asyncRouter = require('../utils/asyncRouter');
 const { col, NO_ID, isDuplicateKey } = require('../utils/db');
-const { requireRole } = require('../utils/auth');
+const { requireTab } = require('../utils/auth');
 
 const router = asyncRouter();
-router.use(requireRole('admin', 'tombola'));
+router.use(requireTab('tombola'));
 
 const events = () => col('tombola_events');
 const tickets = () => col('tombola_tickets');

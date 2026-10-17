@@ -4,9 +4,12 @@ const multer = require('multer');
 const asyncRouter = require('../utils/asyncRouter');
 const { col, NO_ID } = require('../utils/db');
 const { toAbsoluteUrl } = require('../utils/baseUrl');
+const { requireTab } = require('../utils/auth');
 
 const router = asyncRouter();
 const evenements = () => col('evenements');
+// Lecture publique ; modifications réservées à l'onglet Évènements de l'admin.
+const canEdit = requireTab('evenements');
 
 const IMAGE_EXT = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
 const UPLOAD_DIR = path.join(__dirname, '..', 'storage', 'evenements');
@@ -59,7 +62,7 @@ function withAbsoluteImage(evenement, req) {
 // POST /api/evenements/upload-image - envoie une image sur le serveur, renvoie son URL
 // (chemin relatif, résolu dynamiquement à la lecture — voir withAbsoluteImage) à
 // réutiliser comme champ "image" lors de la création/modification d'un évènement.
-router.post('/upload-image', upload.single('file'), (req, res) => {
+router.post('/upload-image', canEdit, upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Fichier requis (champ "file")' });
   const relativeUrl = `/storage/evenements/${encodeURIComponent(req.file.filename)}`;
   res.status(201).json({ url: relativeUrl });
@@ -75,7 +78,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET /api/evenements/all - liste complète (admin), y compris masqués
-router.get('/all', async (req, res) => {
+router.get('/all', canEdit, async (req, res) => {
   const list = await evenements().find({}, NO_ID).sort(NEWEST_FIRST).toArray();
   res.json(list.map(e => withAbsoluteImage(e, req)));
 });
@@ -88,14 +91,14 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/evenements
-router.post('/', async (req, res) => {
+router.post('/', canEdit, async (req, res) => {
   const evenement = { ...editableFields(req.body), id: generateId() };
   await evenements().insertOne({ ...evenement });
   res.status(201).json(evenement);
 });
 
 // PUT /api/evenements/:id
-router.put('/:id', async (req, res) => {
+router.put('/:id', canEdit, async (req, res) => {
   const updated = await evenements().findOneAndUpdate(
     { id: req.params.id },
     { $set: editableFields(req.body) },
@@ -106,14 +109,14 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE /api/evenements/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', canEdit, async (req, res) => {
   const { deletedCount } = await evenements().deleteOne({ id: req.params.id });
   if (!deletedCount) return res.status(404).json({ error: 'Évènement introuvable' });
   res.status(204).end();
 });
 
 // PATCH /api/evenements/:id/masque - bascule masqué/visible
-router.patch('/:id/masque', async (req, res) => {
+router.patch('/:id/masque', canEdit, async (req, res) => {
   const updated = await evenements().findOneAndUpdate(
     { id: req.params.id },
     [{ $set: { masque: { $not: [{ $eq: ['$masque', true] }] } } }],

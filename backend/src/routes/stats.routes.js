@@ -1,9 +1,12 @@
 const asyncRouter = require('../utils/asyncRouter');
 const { col } = require('../utils/db');
+const { requireTab } = require('../utils/auth');
 
 const router = asyncRouter();
 const pageviews = () => col('pageviews');
 const locations = () => col('ip_locations');
+// Comptage des visites public ; consultation réservée à l'onglet Statistiques.
+const canRead = requireTab('stats');
 
 const VISITOR_LIMIT = 100;
 const DAILY_RANGE = 14;
@@ -92,7 +95,7 @@ router.post('/pageview', async (req, res) => {
 
 // GET /api/stats/summary - statistiques agrégées pour le tableau de bord admin.
 // Les comptages sont faits par la base, sans recharger toutes les pages vues.
-router.get('/summary', async (req, res) => {
+router.get('/summary', canRead, async (req, res) => {
   const today = new Date();
   const days = [];
   for (let i = DAILY_RANGE - 1; i >= 0; i--) {
@@ -150,7 +153,7 @@ router.get('/summary', async (req, res) => {
 });
 
 // GET /api/stats/visitors - détail des sessions récentes (parcours + localisation).
-router.get('/visitors', async (req, res) => {
+router.get('/visitors', canRead, async (req, res) => {
   const sessions = await pageviews()
     .aggregate([
       { $sort: { timestamp: 1 } },

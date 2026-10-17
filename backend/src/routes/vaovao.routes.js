@@ -4,9 +4,12 @@ const multer = require('multer');
 const asyncRouter = require('../utils/asyncRouter');
 const { col, NO_ID } = require('../utils/db');
 const { toAbsoluteUrl } = require('../utils/baseUrl');
+const { requireTab } = require('../utils/auth');
 
 const router = asyncRouter();
 const annonces = () => col('annonces');
+// Lecture publique ; modifications réservées à l'onglet Vaovao de l'admin.
+const canEdit = requireTab('vaovao');
 
 const IMAGE_EXT = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
 const UPLOAD_DIR = path.join(__dirname, '..', 'storage', 'vaovao');
@@ -71,7 +74,7 @@ function withAbsoluteImage(annonce, req) {
 // POST /api/vaovao/upload-image - envoie une image sur le serveur, renvoie son URL
 // (chemin relatif, résolu dynamiquement à la lecture — voir withAbsoluteImage) à
 // réutiliser comme champ "image" lors de la création/modification d'une annonce.
-router.post('/upload-image', upload.single('file'), (req, res) => {
+router.post('/upload-image', canEdit, upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Fichier requis (champ "file")' });
   const relativeUrl = `/storage/vaovao/${encodeURIComponent(req.file.filename)}`;
   res.status(201).json({ url: relativeUrl });
@@ -84,7 +87,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET /api/vaovao/all - liste complète (admin), y compris masquées, triée par date décroissante
-router.get('/all', async (req, res) => {
+router.get('/all', canEdit, async (req, res) => {
   const list = await annonces().find({}, NO_ID).toArray();
   res.json(sortByPublishedAtDesc(list).map(a => withAbsoluteImage(a, req)));
 });
@@ -97,14 +100,14 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/vaovao
-router.post('/', async (req, res) => {
+router.post('/', canEdit, async (req, res) => {
   const annonce = { ...editableFields(req.body), id: generateId() };
   await annonces().insertOne({ ...annonce });
   res.status(201).json(annonce);
 });
 
 // PUT /api/vaovao/:id
-router.put('/:id', async (req, res) => {
+router.put('/:id', canEdit, async (req, res) => {
   const updated = await annonces().findOneAndUpdate(
     { id: req.params.id },
     { $set: editableFields(req.body) },
@@ -115,14 +118,14 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE /api/vaovao/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', canEdit, async (req, res) => {
   const { deletedCount } = await annonces().deleteOne({ id: req.params.id });
   if (!deletedCount) return res.status(404).json({ error: 'Annonce introuvable' });
   res.status(204).end();
 });
 
 // PATCH /api/vaovao/:id/masque - bascule masqué/visible
-router.patch('/:id/masque', async (req, res) => {
+router.patch('/:id/masque', canEdit, async (req, res) => {
   const updated = await annonces().findOneAndUpdate(
     { id: req.params.id },
     [{ $set: { masque: { $not: [{ $eq: ['$masque', true] }] } } }],

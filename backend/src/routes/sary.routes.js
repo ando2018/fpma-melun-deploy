@@ -4,6 +4,7 @@ const multer = require('multer');
 const asyncRouter = require('../utils/asyncRouter');
 const { col, NO_ID, isDuplicateKey } = require('../utils/db');
 const { getBaseUrl } = require('../utils/baseUrl');
+const { requireTab } = require('../utils/auth');
 
 // Albums photo : les fichiers (images, vidéos) restent sur le disque, dans
 // storage/sary/<id-album>/ ; le nom de l'album, sa date, les liens YouTube et les titres
@@ -11,6 +12,8 @@ const { getBaseUrl } = require('../utils/baseUrl');
 
 const router = asyncRouter();
 const albums = () => col('sary_albums');
+// Lecture publique ; modifications réservées à l'onglet Sary de l'admin.
+const canEdit = requireTab('sary');
 const SARY_DIR = path.join(__dirname, '..', 'storage', 'sary');
 
 const IMAGE_EXT = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
@@ -114,7 +117,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/sary  { nom } - crée un album (dossier sur le disque + fiche en base)
-router.post('/', async (req, res) => {
+router.post('/', canEdit, async (req, res) => {
   const { nom } = req.body;
   if (!nom || !nom.trim()) return res.status(400).json({ error: 'nom requis' });
 
@@ -130,7 +133,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT /api/sary/:id  { nom } - renomme l'album (affichage, sans renommer le dossier physique)
-router.put('/:id', async (req, res) => {
+router.put('/:id', canEdit, async (req, res) => {
   const nom = String(req.body?.nom || '').trim();
   const album = nom
     ? await albums().findOneAndUpdate({ id: req.params.id }, { $set: { nom } }, { returnDocument: 'after', ...NO_ID })
@@ -140,7 +143,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE /api/sary/:id - supprime l'album, son dossier et tout son contenu
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', canEdit, async (req, res) => {
   const { deletedCount } = await albums().deleteOne({ id: req.params.id });
   const dir = albumDir(req.params.id);
   const hadFolder = fs.existsSync(dir) && path.dirname(dir) === SARY_DIR;
@@ -176,7 +179,7 @@ const upload = multer({
 // POST /api/sary/:id/medias
 // - soit un fichier (multipart, champ "file", champ optionnel "titre") pour une image/vidéo à stocker sur le disque
 // - soit un JSON { type: 'youtube', url, titre } pour un lien vidéo externe
-router.post('/:id/medias', upload.single('file'), async (req, res) => {
+router.post('/:id/medias', canEdit, upload.single('file'), async (req, res) => {
   const album = await findAlbum(req.params.id);
   if (!album) return res.status(404).json({ error: 'Album introuvable' });
 
@@ -199,7 +202,7 @@ router.post('/:id/medias', upload.single('file'), async (req, res) => {
 });
 
 // DELETE /api/sary/:id/medias/:mediaId - supprime un fichier ou un lien externe
-router.delete('/:id/medias/:mediaId', async (req, res) => {
+router.delete('/:id/medias/:mediaId', canEdit, async (req, res) => {
   const album = await findAlbum(req.params.id);
   if (!album) return res.status(404).json({ error: 'Album introuvable' });
 

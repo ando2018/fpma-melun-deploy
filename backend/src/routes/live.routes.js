@@ -1,6 +1,6 @@
 const asyncRouter = require('../utils/asyncRouter');
 const { getSetting, setSetting } = require('../utils/db');
-const { requireRole } = require('../utils/auth');
+const { requireTab } = require('../utils/auth');
 
 // Direct vidéo en pair-à-pair (WebRTC) : la vidéo va directement de l'appareil qui filme
 // (admin) à chaque spectateur. Ce serveur ne fait que la mise en relation (échange des
@@ -111,7 +111,7 @@ router.post('/viewer/:id/leave', (req, res) => {
 
 // ---------- Admin (appareil qui filme) ----------
 
-const adminOnly = requireRole('admin');
+const adminOnly = requireTab('direct');
 
 router.get('/config', adminOnly, async (req, res) => {
   res.json({ ...(await readConfig()), maxViewers: MAX_VIEWERS });
