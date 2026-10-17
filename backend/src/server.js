@@ -15,6 +15,7 @@ const authRoutes = require('./routes/auth.routes');
 const pushRoutes = require('./routes/push.routes');
 const liveRoutes = require('./routes/live.routes');
 const usersRoutes = require('./routes/users.routes');
+const shareImageRoutes = require('./routes/shareImage.routes');
 
 const { connectDb, col } = require('./utils/db');
 const { importJsonOnce } = require('./utils/importJson');
@@ -49,6 +50,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/push', pushRoutes);
 app.use('/api/live', liveRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/share-image', shareImageRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
@@ -84,6 +86,24 @@ if (fs.existsSync(FRONTEND_INDEX)) {
     }
   });
 
+  // Image d'aperçu d'un album : sa première photo (dans l'ordre affiché sur la page de
+  // l'album), en version allégée via /api/share-image ; sinon la miniature de sa
+  // première vidéo YouTube.
+  const SARY_DIR = path.join(__dirname, 'storage', 'sary');
+  // encodeURIComponent laisse passer l'apostrophe, mal reconnue par certains robots d'aperçu.
+  const encodeUrlPart = value => encodeURIComponent(value).replace(/'/g, '%27');
+  function albumImage(album, baseUrl) {
+    const dir = path.join(SARY_DIR, album.id);
+    const files = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
+    const photo = files.find(f => !f.startsWith('.') && /\.(jpe?g|png|webp|gif)$/i.test(f));
+    if (photo) return `${baseUrl}/api/share-image/sary/${encodeUrlPart(album.id)}/${encodeUrlPart(photo)}`;
+    for (const link of album.links || []) {
+      const image = articleImage({ videoUrl: link.url }, baseUrl);
+      if (image) return image;
+    }
+    return undefined;
+  }
+
   async function sendPage(req, res) {
     const articleMatch = req.path.match(/^\/vaovao\/article\/([^/]+)\/?$/);
     if (articleMatch) {
@@ -103,14 +123,15 @@ if (fs.existsSync(FRONTEND_INDEX)) {
     // Aperçu de partage d'un album Sary : le lien est construit à partir du nom affiché.
     const albumMatch = req.path.match(/^\/sary\/album\/([^/]+)\/?$/);
     if (albumMatch) {
-      const albums = await col('sary_albums').find({}, { projection: { _id: 0, id: 1, nom: 1 } }).toArray();
+      const albums = await col('sary_albums').find({}, { projection: { _id: 0, id: 1, nom: 1, links: 1 } }).toArray();
       const album = albums.find(a => annonceSlug(a.nom || a.id) === albumMatch[1] || a.id === albumMatch[1]);
       if (album) {
         const nom = album.nom || album.id;
         return sendIndexWithMeta(req, res, {
           title: `${nom} — Sary FPMA Melun`,
           description: `Album photos « ${nom} » de la FPMA Melun.`,
-          url: `${getBaseUrl(req)}${req.originalUrl}`
+          url: `${getBaseUrl(req)}${req.originalUrl}`,
+          image: albumImage(album, getBaseUrl(req))
         });
       }
     }

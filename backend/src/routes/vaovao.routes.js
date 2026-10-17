@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const asyncRouter = require('../utils/asyncRouter');
+const { optimizeUpload } = require('../utils/optimizeImage');
 const { col, NO_ID } = require('../utils/db');
 const { toAbsoluteUrl } = require('../utils/baseUrl');
 const { requireTab } = require('../utils/auth');
@@ -74,7 +75,7 @@ function withAbsoluteImage(annonce, req) {
 // POST /api/vaovao/upload-image - envoie une image sur le serveur, renvoie son URL
 // (chemin relatif, résolu dynamiquement à la lecture — voir withAbsoluteImage) à
 // réutiliser comme champ "image" lors de la création/modification d'une annonce.
-router.post('/upload-image', canEdit, upload.single('file'), (req, res) => {
+router.post('/upload-image', canEdit, upload.single('file'), optimizeUpload, (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Fichier requis (champ "file")' });
   const relativeUrl = `/storage/vaovao/${encodeURIComponent(req.file.filename)}`;
   res.status(201).json({ url: relativeUrl });

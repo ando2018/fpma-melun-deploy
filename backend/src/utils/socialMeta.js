@@ -6,8 +6,26 @@ function escapeHtml(value) {
     .replace(/"/g, '&quot;');
 }
 
+const HTML_ENTITIES = {
+  nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", rsquo: '’', lsquo: '‘',
+  laquo: '«', raquo: '»', hellip: '…', eacute: 'é', egrave: 'è', ecirc: 'ê', agrave: 'à',
+  acirc: 'â', ccedil: 'ç', ocirc: 'ô', ucirc: 'û', ugrave: 'ù', icirc: 'î', iuml: 'ï', Eacute: 'É'
+};
+
+// Texte brut : retire les balises et décode les entités (&nbsp;, &amp;, &#39;…) écrites
+// par l'éditeur de texte, pour ne pas les afficher telles quelles dans l'aperçu.
 function stripHtml(value) {
-  return String(value ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  return String(value ?? '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (entity, code) => {
+      if (code[0] === '#') {
+        const n = code[1].toLowerCase() === 'x' ? parseInt(code.slice(2), 16) : parseInt(code.slice(1), 10);
+        return Number.isFinite(n) ? String.fromCodePoint(n) : entity;
+      }
+      return HTML_ENTITIES[code] ?? HTML_ENTITIES[code.toLowerCase()] ?? entity;
+    })
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function truncate(value, maxLength) {
@@ -52,10 +70,16 @@ function injectSocialMeta(html, meta) {
 }
 
 // Image d'aperçu d'un article : sa photo, sinon la miniature de sa vidéo YouTube.
-// Toujours une URL absolue (exigée par WhatsApp, Facebook…).
+// Toujours une URL absolue (exigée par WhatsApp, Facebook…). Une photo uploadée sur le
+// site passe par /api/share-image, qui en sert une version allégée : WhatsApp ignore
+// les images de plus d'environ 600 Ko.
 function articleImage(annonce, baseUrl) {
   const image = String(annonce.image || '').trim();
   if (image) {
+    const local = image.match(/^(?:https?:\/\/[^/]+)?\/?storage\/(.+)$/i);
+    if (local && (!/^https?:/i.test(image) || image.startsWith(baseUrl))) {
+      return `${baseUrl}/api/share-image/${local[1]}`;
+    }
     if (/^https?:\/\//i.test(image)) return image;
     return `${baseUrl}/${image.replace(/^\/+/, '')}`;
   }

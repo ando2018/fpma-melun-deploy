@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const asyncRouter = require('../utils/asyncRouter');
+const { optimizeUpload } = require('../utils/optimizeImage');
 const { col, NO_ID, isDuplicateKey } = require('../utils/db');
 const { getBaseUrl } = require('../utils/baseUrl');
 const { requireTab } = require('../utils/auth');
@@ -179,7 +180,7 @@ const upload = multer({
 // POST /api/sary/:id/medias
 // - soit un fichier (multipart, champ "file", champ optionnel "titre") pour une image/vidéo à stocker sur le disque
 // - soit un JSON { type: 'youtube', url, titre } pour un lien vidéo externe
-router.post('/:id/medias', canEdit, upload.single('file'), async (req, res) => {
+router.post('/:id/medias', canEdit, upload.single('file'), optimizeUpload, async (req, res) => {
   const album = await findAlbum(req.params.id);
   if (!album) return res.status(404).json({ error: 'Album introuvable' });
 
