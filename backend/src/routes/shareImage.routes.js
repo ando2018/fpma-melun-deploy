@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
+require('../utils/optimizeImage'); // applique les réglages mémoire de sharp
 
 // Version allégée des images uploadées, utilisée uniquement pour les aperçus de partage
 // (og:image). WhatsApp n'affiche pas l'image d'un aperçu au-delà d'environ 600 Ko, or les
@@ -30,7 +31,7 @@ router.get('/*', async (req, res, next) => {
     if (!fs.existsSync(cacheFile)) {
       await fs.promises.mkdir(CACHE_DIR, { recursive: true });
       const tmp = `${cacheFile}.${process.pid}.tmp`;
-      await sharp(source)
+      await sharp(source, { sequentialRead: true })
         .rotate() // applique l'orientation EXIF des photos de téléphone
         .resize(MAX_WIDTH, MAX_HEIGHT, { fit: 'inside', withoutEnlargement: true })
         .flatten({ background: '#ffffff' }) // PNG transparent -> fond blanc en JPEG

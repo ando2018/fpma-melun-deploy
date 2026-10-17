@@ -2,6 +2,11 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
+// Économise la mémoire sur un petit serveur : pas de cache d'images, un seul fil de
+// calcul par image (une photo de 24 Mpx peut sinon occuper plusieurs centaines de Mo).
+sharp.cache(false);
+sharp.concurrency(1);
+
 // Allège les images envoyées depuis l'admin, sans perte de qualité visible :
 // - les photos plus grandes que 2560 px (côté le plus long) sont ramenées à 2560 px,
 //   déjà plus que la résolution d'un écran ou d'un vidéoprojecteur ;
@@ -19,7 +24,7 @@ async function optimizeImage(filePath) {
 
   const tmp = `${filePath}.optim.tmp`;
   try {
-    let image = sharp(filePath)
+    let image = sharp(filePath, { sequentialRead: true })
       .rotate()
       .resize(MAX_SIZE, MAX_SIZE, { fit: 'inside', withoutEnlargement: true })
       .keepIccProfile();
