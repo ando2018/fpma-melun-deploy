@@ -32,14 +32,26 @@ const INDEXES = {
 
 async function connectDb() {
   const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017';
+  // Affichera l'URL dans PM2 pour confirmer que le .env est lu
+  console.log("=== URL CHARGÉE :", process.env.MONGODB_URI, "===");
   client = new MongoClient(uri, { serverSelectionTimeoutMS: 10000 });
   await client.connect();
   db = client.db(process.env.MONGODB_DB || 'fpma');
+  await ensureIndexes();
+  return db;
+}
+
+// Crée les index (et donc les collections). Rappelé après une restauration de sauvegarde.
+async function ensureIndexes() {
   for (const [name, indexes] of Object.entries(INDEXES)) {
     for (const { key, unique } of indexes) {
       await db.collection(name).createIndex(key, unique ? { unique: true } : {});
     }
   }
+}
+
+function getDb() {
+  if (!db) throw new Error('Base de données non connectée');
   return db;
 }
 
@@ -66,4 +78,4 @@ async function closeDb() {
   await client?.close();
 }
 
-module.exports = { connectDb, closeDb, col, getSetting, setSetting, isDuplicateKey, NO_ID };
+module.exports = { connectDb, closeDb, ensureIndexes, getDb, col, getSetting, setSetting, isDuplicateKey, NO_ID };

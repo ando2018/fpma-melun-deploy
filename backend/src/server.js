@@ -20,6 +20,7 @@ const banniereRoutes = require('./routes/banniere.routes');
 
 const { connectDb, col } = require('./utils/db');
 const { importJsonOnce } = require('./utils/importJson');
+const { isHealthy, restoreLatest, startBackups, log: backupLog } = require('./utils/backup');
 const { initPush } = require('./utils/push');
 const { getBaseUrl } = require('./utils/baseUrl');
 const { annonceSlug } = require('./utils/annonceSlug');
@@ -165,10 +166,21 @@ async function start() {
   await connectDb();
   console.log(`MongoDB connecté (base « ${process.env.MONGODB_DB || 'fpma'} »)`);
 
-  const imported = await importJsonOnce();
-  if (imported) console.log('Anciennes données JSON importées dans MongoDB :', imported);
+  // Base vide (première installation, ou base vidée) : on restaure la dernière sauvegarde
+  // automatique si elle existe ; les anciens fichiers JSON ne servent qu'en dernier recours,
+  // car ils ramènent le site à son état du jour du passage à MongoDB.
+  if (!(await isHealthy())) {
+    const restored = await restoreLatest();
+    if (restored) {
+      backupLog(`Base vide au démarrage : restaurée depuis la sauvegarde ${restored.file} : ${JSON.stringify(restored.counts)}`);
+    } else {
+      const imported = await importJsonOnce();
+      if (imported) console.log('Anciennes données JSON importées dans MongoDB :', imported);
+    }
+  }
 
   await initPush();
+  startBackups();
 
   app.listen(PORT, () => {
     console.log(`FPMA backend à l'écoute sur http://localhost:${PORT}`);

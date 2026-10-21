@@ -12,3 +12,6 @@ src/data/pageview.json
 
 # Images réduites des aperçus de partage (régénérées automatiquement)
 src/storage/.share-cache/
+
+# Sauvegardes automatiques de la base (données personnelles, à garder sur le serveur)
+backups/
