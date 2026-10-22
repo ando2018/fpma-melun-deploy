@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const { BSON } = require('mongodb');
-const { ensureIndexes, getDb, getSetting } = require('./db');
+const { ensureIndexes, getDb, getSetting, setSetting } = require('./db');
 
 // Sauvegarde automatique de toute la base, et surveillance qu'elle n'a pas été vidée.
 //
@@ -40,6 +40,16 @@ function log(message) {
 
 async function isHealthy() {
   return !!(await getSetting(MARKER, null));
+}
+
+// Base remplie sans passer par l'import JSON (données déjà là, ou ajoutées à la main) :
+// pose le marqueur pour que la surveillance et les sauvegardes la considèrent valide.
+async function markExistingData() {
+  const db = getDb();
+  const hasData = (await db.collection('users').countDocuments({}, { limit: 1 })) > 0
+    || (await db.collection('annonces').countDocuments({}, { limit: 1 })) > 0;
+  if (hasData) await setSetting(MARKER, { date: new Date().toISOString(), source: 'base existante' });
+  return hasData;
 }
 
 function listBackups() {
@@ -141,4 +151,4 @@ function startBackups() {
   console.log(`Sauvegardes automatiques de la base dans ${BACKUP_DIR} (toutes les heures, ${KEEP} gardées)`);
 }
 
-module.exports = { backupNow, restoreLatest, startBackups, isHealthy, listBackups, log };
+module.exports = { backupNow, restoreLatest, startBackups, isHealthy, markExistingData, listBackups, log };

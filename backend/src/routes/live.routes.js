@@ -1,6 +1,6 @@
 const asyncRouter = require('../utils/asyncRouter');
 const { getSetting, setSetting } = require('../utils/db');
-const { requireTab } = require('../utils/auth');
+const { authenticate, requireTab } = require('../utils/auth');
 
 // Direct vidéo en pair-à-pair (WebRTC) : la vidéo va directement de l'appareil qui filme
 // (admin) à chaque spectateur. Ce serveur ne fait que la mise en relation (échange des
@@ -13,7 +13,10 @@ const VIEWER_TIMEOUT_MS = 20000;
 const BROADCASTER_TIMEOUT_MS = 20000;
 const MAX_SDP_LENGTH = 30000;
 
-const DEFAULT_CONFIG = { title: 'Culte en direct', description: '', visible: false };
+// audience : 'public' = tout le monde voit le direct ; 'test' = seulement les comptes
+// connectés qui ont l'onglet Direct (pour vérifier image et son avant de publier).
+const DEFAULT_CONFIG = { title: 'Culte en direct', description: '', visible: false, audience: 'public' };
+const AUDIENCES = ['public', 'test'];
 
 async function readConfig() {
   return { ...DEFAULT_CONFIG, ...(await getSetting('live-config', {})) };
@@ -56,6 +59,15 @@ function cleanup() {
 }
 setInterval(cleanup, 5000).unref();
 
+// Le direct est-il visible pour ce visiteur ? En mode test, il faut être connecté avec
+// l'onglet Direct (le jeton de connexion est envoyé automatiquement par le site).
+async function canWatch(req, config) {
+  if (!config.visible) return false;
+  if (config.audience !== 'test') return true;
+  const user = await authenticate(req).catch(() => null);
+  return !!user && (user.role === 'admin' || user.tabs.includes('direct'));
+}
+
 function isValidSdp(sdp) {
   return typeof sdp === 'string' && sdp.length > 0 && sdp.length < MAX_SDP_LENGTH;
 }
@@ -65,10 +77,14 @@ function isValidSdp(sdp) {
 router.get('/status', async (req, res) => {
   cleanup();
   const config = await readConfig();
+  const visible = await canWatch(req, config);
+  // Réponse propre à chaque visiteur (mode test) : ne pas la mettre en cache.
+  res.set('Cache-Control', 'no-store');
   res.json({
     title: config.title,
     description: config.description,
-    visible: config.visible,
+    visible,
+    test: visible && config.audience === 'test',
     onAir: state.onAir,
     startedAt: state.startedAt,
     viewers: state.viewers.size,
@@ -78,7 +94,7 @@ router.get('/status', async (req, res) => {
 
 router.post('/join', async (req, res) => {
   cleanup();
-  if (!state.onAir || !(await readConfig()).visible) return res.status(409).json({ error: 'Aucun direct en cours.' });
+  if (!state.onAir || !(await canWatch(req, await readConfig()))) return res.status(409).json({ error: 'Aucun direct en cours.' });
   if (state.viewers.size >= MAX_VIEWERS) {
     return res.status(503).json({ error: 'Le direct est complet pour le moment, réessayez dans quelques minutes.' });
   }
@@ -125,8 +141,10 @@ router.put('/config', adminOnly, async (req, res) => {
   const description = req.body?.description !== undefined ? String(req.body.description).trim() : current.description;
   if (description.length > 1000) return res.status(400).json({ error: 'Description trop longue (1000 caractères max).' });
   const visible = req.body?.visible !== undefined ? req.body.visible === true : current.visible;
+  const audience = req.body?.audience !== undefined ? req.body.audience : current.audience;
+  if (!AUDIENCES.includes(audience)) return res.status(400).json({ error: 'Public du direct invalide.' });
 
-  const config = { title, description, visible };
+  const config = { title, description, visible, audience };
   await writeConfig(config);
   res.json({ ...config, maxViewers: MAX_VIEWERS });
 });

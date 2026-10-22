@@ -102,6 +102,7 @@ const requireAuth = guard(() => true);
 
 module.exports = {
   ADMIN_TABS,
+  authenticate,
   hashPassword,
   verifyPassword,
   createToken,

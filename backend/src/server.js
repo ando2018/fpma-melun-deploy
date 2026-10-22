@@ -20,7 +20,7 @@ const banniereRoutes = require('./routes/banniere.routes');
 
 const { connectDb, col } = require('./utils/db');
 const { importJsonOnce } = require('./utils/importJson');
-const { isHealthy, restoreLatest, startBackups, log: backupLog } = require('./utils/backup');
+const { isHealthy, markExistingData, restoreLatest, startBackups, log: backupLog } = require('./utils/backup');
 const { initPush } = require('./utils/push');
 const { getBaseUrl } = require('./utils/baseUrl');
 const { annonceSlug } = require('./utils/annonceSlug');
@@ -169,13 +169,20 @@ async function start() {
   // Base vide (première installation, ou base vidée) : on restaure la dernière sauvegarde
   // automatique si elle existe ; les anciens fichiers JSON ne servent qu'en dernier recours,
   // car ils ramènent le site à son état du jour du passage à MongoDB.
+  //
+  // L'import des fichiers JSON (seed) est désactivé par défaut : il ne se fait que si
+  // IMPORT_JSON_ON_START=true dans le .env, ou à la main avec `npm run import-json`.
   if (!(await isHealthy())) {
     const restored = await restoreLatest();
     if (restored) {
       backupLog(`Base vide au démarrage : restaurée depuis la sauvegarde ${restored.file} : ${JSON.stringify(restored.counts)}`);
-    } else {
+    } else if (/^(true|1|oui|yes|on)$/i.test(String(process.env.IMPORT_JSON_ON_START ?? '').trim())) {
       const imported = await importJsonOnce();
       if (imported) console.log('Anciennes données JSON importées dans MongoDB :', imported);
+    } else if (await markExistingData()) {
+      console.log('Base existante reconnue (aucun import des fichiers JSON).');
+    } else {
+      console.warn('Base vide et import des fichiers JSON désactivé : lancez « npm run import-json » si besoin.');
     }
   }
 
