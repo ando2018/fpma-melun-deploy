@@ -20,6 +20,7 @@ const INDEXES = {
   users: [{ key: { username: 1 }, unique: true }],
   sary_albums: [{ key: { id: 1 }, unique: true }],
   bannieres: [{ key: { id: 1 }, unique: true }],
+  live_recordings: [{ key: { id: 1 }, unique: true }, { key: { startedAt: -1 } }],
   tombola_events: [{ key: { id: 1 }, unique: true }],
   // Un même numéro ne peut jamais être vendu deux fois dans un évènement, même si deux
   // vendeurs valident au même instant.

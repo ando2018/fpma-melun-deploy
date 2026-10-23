@@ -17,6 +17,7 @@ const liveRoutes = require('./routes/live.routes');
 const usersRoutes = require('./routes/users.routes');
 const shareImageRoutes = require('./routes/shareImage.routes');
 const banniereRoutes = require('./routes/banniere.routes');
+const liveRecordingsRoutes = require('./routes/liveRecordings.routes');
 
 const { connectDb, col } = require('./utils/db');
 const { importJsonOnce } = require('./utils/importJson');
@@ -54,6 +55,7 @@ app.use('/api/live', liveRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/share-image', shareImageRoutes);
 app.use('/api/banniere', banniereRoutes);
+app.use('/api/live-recordings', liveRecordingsRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 

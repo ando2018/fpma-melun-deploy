@@ -52,6 +52,15 @@ function verifyToken(token) {
   }
 }
 
+// Lien signé à durée limitée (ex. téléchargement d'une vidéo : un simple lien ne peut pas
+// transmettre le jeton de connexion).
+function createSignedValue(data, ttlMs) {
+  const payload = Buffer.from(JSON.stringify({ ...data, exp: Date.now() + ttlMs })).toString('base64url');
+  return `${payload}.${sign(payload)}`;
+}
+
+const verifySignedValue = verifyToken;
+
 // Onglets réellement accessibles. L'ancien rôle « tombola » (avant la gestion des
 // utilisateurs) équivaut à l'onglet Tombola seul.
 function accessOf(user) {
@@ -102,6 +111,8 @@ const requireAuth = guard(() => true);
 
 module.exports = {
   ADMIN_TABS,
+  createSignedValue,
+  verifySignedValue,
   authenticate,
   hashPassword,
   verifyPassword,

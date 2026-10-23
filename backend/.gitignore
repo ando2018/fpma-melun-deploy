@@ -15,3 +15,6 @@ src/storage/.share-cache/
 
 # Sauvegardes automatiques de la base (données personnelles, à garder sur le serveur)
 backups/
+
+# Enregistrements vidéo des directs (fichiers volumineux, gardés sur le serveur)
+recordings/
