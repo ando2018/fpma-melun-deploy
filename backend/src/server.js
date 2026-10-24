@@ -141,6 +141,20 @@ if (fs.existsSync(FRONTEND_INDEX)) {
       }
     }
 
+    // Aperçu du lien de partage du direct : image « FPMA Melun en direct » + titre et
+    // description. ?v= change avec le texte pour que WhatsApp recharge l'image.
+    if (req.path === '/direct') {
+      const info = await liveRoutes.publicShareInfo();
+      return sendIndexWithMeta(req, res, {
+        title: info.onAir ? `🔴 En direct : ${info.title} — FPMA Melun` : 'Direct — FPMA Melun',
+        description: info.onAir
+          ? buildDescription(info.description) || 'Suivez le direct de la FPMA Melun.'
+          : 'Pas de direct pour le moment : vous serez notifié lors du prochain direct de la FPMA Melun.',
+        url: `${getBaseUrl(req)}/direct`,
+        image: `${getBaseUrl(req)}/api/live/share-image.jpg?v=${liveRoutes.shareImageKey(info)}`
+      });
+    }
+
     if (req.path === '/verset-du-jour') {
       return sendIndexWithMeta(req, res, {
         title: 'Verset du jour — FPMA Melun',

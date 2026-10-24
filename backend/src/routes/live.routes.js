@@ -1,6 +1,7 @@
 const asyncRouter = require('../utils/asyncRouter');
 const { getSetting, setSetting } = require('../utils/db');
 const { authenticate, requireTab } = require('../utils/auth');
+const { liveShareImage, shareImageKey } = require('../utils/liveShareImage');
 
 // Direct vidéo en pair-à-pair (WebRTC) : la vidéo va directement de l'appareil qui filme
 // (admin) à chaque spectateur. Ce serveur ne fait que la mise en relation (échange des
@@ -72,7 +73,23 @@ function isValidSdp(sdp) {
   return typeof sdp === 'string' && sdp.length > 0 && sdp.length < MAX_SDP_LENGTH;
 }
 
+// Ce que voit le public du direct (lien de partage, aperçu) : un direct en mode test
+// n'est jamais annoncé.
+async function publicShareInfo() {
+  cleanup();
+  const config = await readConfig();
+  const onAir = state.onAir && config.visible && config.audience !== 'test';
+  return { onAir, title: config.title, description: config.description };
+}
+
 // ---------- Public (spectateurs) ----------
+
+// GET /api/live/share-image.jpg - image d'aperçu du lien /direct (WhatsApp, Facebook…)
+router.get('/share-image.jpg', async (req, res) => {
+  const image = await liveShareImage(await publicShareInfo());
+  res.set('Cache-Control', 'public, max-age=300');
+  res.type('image/jpeg').send(image);
+});
 
 router.get('/status', async (req, res) => {
   cleanup();
@@ -191,3 +208,6 @@ router.post('/broadcaster/offer', adminOnly, (req, res) => {
 });
 
 module.exports = router;
+// Pour l'aperçu de partage de la page /direct (server.js).
+module.exports.publicShareInfo = publicShareInfo;
+module.exports.shareImageKey = shareImageKey;
