@@ -21,6 +21,10 @@ const INDEXES = {
   sary_albums: [{ key: { id: 1 }, unique: true }],
   bannieres: [{ key: { id: 1 }, unique: true }],
   live_recordings: [{ key: { id: 1 }, unique: true }, { key: { startedAt: -1 } }],
+  live_sessions: [{ key: { id: 1 }, unique: true }, { key: { startedAt: -1 } }],
+  payment_choices: [{ key: { id: 1 }, unique: true }, { key: { slug: 1 }, unique: true }],
+  payments: [{ key: { id: 1 }, unique: true }, { key: { stripeSessionId: 1 } }, { key: { createdAt: -1 } }],
+  payment_logs: [{ key: { at: -1 } }],
   tombola_events: [{ key: { id: 1 }, unique: true }],
   // Un même numéro ne peut jamais être vendu deux fois dans un évènement, même si deux
   // vendeurs valident au même instant.

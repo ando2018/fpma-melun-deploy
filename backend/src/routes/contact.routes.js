@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+const { isSmtpConfigured, buildTransport } = require('../utils/mailer');
 const asyncRouter = require('../utils/asyncRouter');
 const { col, NO_ID } = require('../utils/db');
 const { requireTab } = require('../utils/auth');
@@ -8,22 +8,6 @@ const messages = () => col('messages');
 // Envoi du formulaire public ; lecture des messages réservée à l'onglet Boîte mail.
 const canRead = requireTab('messages');
 
-function isSmtpConfigured() {
-  return !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
-}
-
-function buildTransport() {
-  const port = Number(process.env.SMTP_PORT) || 587;
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port,
-    secure: port === 465,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
-    }
-  });
-}
 
 // POST /api/contact  { name, email, message } - envoie le mail (si SMTP configuré) et garde une trace.
 router.post('/', async (req, res) => {

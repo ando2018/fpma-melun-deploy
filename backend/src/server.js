@@ -18,6 +18,7 @@ const usersRoutes = require('./routes/users.routes');
 const shareImageRoutes = require('./routes/shareImage.routes');
 const banniereRoutes = require('./routes/banniere.routes');
 const liveRecordingsRoutes = require('./routes/liveRecordings.routes');
+const paymentsRoutes = require('./routes/payments.routes');
 
 const { connectDb, col } = require('./utils/db');
 const { importJsonOnce } = require('./utils/importJson');
@@ -38,6 +39,10 @@ app.set('trust proxy', true);
 // CORS ouvert pour l'instant (dev). En production, restreindre à l'origine du site :
 // app.use(cors({ origin: 'https://fpma-melun.org' }));
 app.use(cors());
+// Webhook Stripe : corps brut (la signature porte sur le texte exact), donc avant express.json().
+app.post('/api/payments/webhook', express.raw({ type: () => true, limit: '1mb' }), (req, res, next) =>
+  paymentsRoutes.webhookHandler(req, res).catch(next)
+);
 app.use(express.json());
 
 // Sert les fichiers uploadés (images/vidéos des albums Sary) de façon statique.
@@ -56,6 +61,7 @@ app.use('/api/users', usersRoutes);
 app.use('/api/share-image', shareImageRoutes);
 app.use('/api/banniere', banniereRoutes);
 app.use('/api/live-recordings', liveRecordingsRoutes);
+app.use('/api/payments', paymentsRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
@@ -64,7 +70,11 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 // Chemin configurable via FRONTEND_DIST_PATH (utile si les deux projets ne sont pas
 // des dossiers frères) ; par défaut on suppose fpma-site/ à côté de fpma-backend/.
 const FRONTEND_DIST_PATH =
-  process.env.FRONTEND_DIST_PATH || path.join(__dirname, '..', '..', 'frontend');
+  process.env.FRONTEND_DIST_PATH ||
+  [path.join(__dirname, '..', '..', 'frontend'), path.join(__dirname, '..', '..', 'fpma-site', 'dist', 'fpma-site')].find(dir =>
+    fs.existsSync(path.join(dir, 'index.html'))
+  ) ||
+  path.join(__dirname, '..', '..', 'frontend');
 const FRONTEND_INDEX = path.join(FRONTEND_DIST_PATH, 'index.html');
 
 if (fs.existsSync(FRONTEND_INDEX)) {
@@ -152,6 +162,25 @@ if (fs.existsSync(FRONTEND_INDEX)) {
           : 'Pas de direct pour le moment : vous serez notifié lors du prochain direct de la FPMA Melun.',
         url: `${getBaseUrl(req)}/direct`,
         image: `${getBaseUrl(req)}/api/live/share-image.jpg?v=${liveRoutes.shareImageKey(info)}`
+      });
+    }
+
+    // Lien d'un direct privé : aperçu « FPMA Melun — direct privé » avec titre et
+    // description, seulement si le lien est valide.
+    const privateMatch = req.path.match(/^\/direct\/prive\/([^/]+)\/?$/);
+    if (privateMatch) {
+      const token = decodeURIComponent(privateMatch[1]);
+      const info = await liveRoutes.privateShareInfo(token);
+      const base = getBaseUrl(req);
+      return sendIndexWithMeta(req, res, {
+        title: info ? `🔒 Direct privé : ${info.title} — FPMA Melun` : 'Direct privé — FPMA Melun',
+        description: info
+          ? buildDescription(info.description) || 'Accès réservé : indiquez votre nom pour rejoindre le direct.'
+          : 'Ce lien de direct privé n’est plus valide : demandez le nouveau lien.',
+        url: `${base}${req.path}`,
+        image: info
+          ? `${base}/api/live/share-image.jpg?token=${encodeURIComponent(token)}&v=${liveRoutes.shareImageKey(info)}`
+          : undefined
       });
     }
 

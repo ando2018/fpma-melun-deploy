@@ -15,7 +15,9 @@ const LOGO_CANDIDATES = [
   path.join(__dirname, '..', '..', '..', 'fpma-site', 'dist', 'fpma-site', 'assets', 'images', 'banniere-droite.png')
 ].filter(Boolean);
 
-let cache = { key: null, buffer: null };
+// Quelques images gardées en mémoire (direct public, direct privé…).
+const cache = new Map();
+const CACHE_SIZE = 6;
 let logoDataUri;
 
 function escapeXml(value) {
@@ -58,18 +60,24 @@ function logo() {
 function shareImageKey(info) {
   return crypto
     .createHash('sha1')
-    .update(JSON.stringify([info.onAir, info.title, info.description]))
+    .update(JSON.stringify([info.onAir, info.private, info.title, info.description]))
     .digest('hex')
     .slice(0, 12);
 }
 
 function buildSvg(info) {
   const font = "DejaVu Sans, Liberation Sans, Arial, Helvetica, sans-serif";
-  const badge = info.onAir ? '● EN DIRECT' : 'DIRECT';
-  const badgeColor = info.onAir ? '#d62f2f' : '#6b6f86';
-  const titleLines = wrap(info.onAir ? info.title : 'Les directs de la FPMA Melun', 30, 2);
+  // Direct privé : titre et description toujours affichés (invitation envoyée avant le
+  // direct), badge violet.
+  const badge = info.private ? (info.onAir ? '● DIRECT PRIVÉ' : 'DIRECT PRIVÉ') : info.onAir ? '● EN DIRECT' : 'DIRECT';
+  const badgeColor = info.private ? '#6a3fb5' : info.onAir ? '#d62f2f' : '#6b6f86';
+  const badgeWidth = info.private ? (info.onAir ? 360 : 320) : info.onAir ? 290 : 190;
+  const showDetails = info.onAir || info.private;
+  const titleLines = wrap(showDetails ? info.title : 'Les directs de la FPMA Melun', 30, 2);
   const descLines = wrap(
-    info.onAir ? info.description || 'Rejoignez-nous en direct.' : 'Pas de direct pour le moment : vous serez notifié lors du prochain direct.',
+    showDetails
+      ? info.description || (info.private ? 'Accès réservé : indiquez votre nom pour rejoindre le direct.' : 'Rejoignez-nous en direct.')
+      : 'Pas de direct pour le moment : vous serez notifié lors du prochain direct.',
     52,
     3
   );
@@ -85,10 +93,10 @@ function buildSvg(info) {
     </linearGradient>
   </defs>
   <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#bg)"/>
-  <rect x="0" y="${HEIGHT - 14}" width="${WIDTH}" height="14" fill="#d62f2f"/>
+  <rect x="0" y="${HEIGHT - 14}" width="${WIDTH}" height="14" fill="${info.private ? '#6a3fb5' : '#d62f2f'}"/>
   <text x="70" y="120" font-family="${font}" font-size="64" font-weight="bold" fill="#ffffff">FPMA Melun</text>
-  <rect x="70" y="160" width="${info.onAir ? 290 : 190}" height="64" rx="12" fill="${badgeColor}"/>
-  <text x="${info.onAir ? 215 : 165}" y="204" text-anchor="middle" font-family="${font}" font-size="34" font-weight="bold" fill="#ffffff">${escapeXml(badge)}</text>
+  <rect x="70" y="160" width="${badgeWidth}" height="64" rx="12" fill="${badgeColor}"/>
+  <text x="${70 + badgeWidth / 2}" y="204" text-anchor="middle" font-family="${font}" font-size="34" font-weight="bold" fill="#ffffff">${escapeXml(badge)}</text>
   ${titleLines
     .map((l, i) => `<text x="70" y="${titleY + i * 66}" font-family="${font}" font-size="54" font-weight="bold" fill="#ffffff">${escapeXml(l)}</text>`)
     .join('\n  ')}
@@ -106,9 +114,10 @@ function buildSvg(info) {
 
 async function liveShareImage(info) {
   const key = shareImageKey(info);
-  if (cache.key === key) return cache.buffer;
+  if (cache.has(key)) return cache.get(key);
   const buffer = await sharp(Buffer.from(buildSvg(info))).jpeg({ quality: 86, mozjpeg: true }).toBuffer();
-  cache = { key, buffer };
+  cache.set(key, buffer);
+  if (cache.size > CACHE_SIZE) cache.delete(cache.keys().next().value);
   return buffer;
 }
 
