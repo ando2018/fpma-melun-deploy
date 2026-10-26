@@ -426,6 +426,11 @@ router.post('/admin/payments/:id/receipt', canManage, async (req, res) => {
   res.json(rest);
 });
 
+// GET /api/payments/admin/status - état de la configuration Stripe et e-mail (sans les clés).
+router.get('/admin/status', canManage, (req, res) => {
+  res.json({ ...stripe.diagnose(), smtp: require('../utils/mailer').isSmtpConfigured() });
+});
+
 router.get('/admin/logs', canManage, async (req, res) => {
   res.json(await logs().find({}, NO_ID).sort({ at: -1 }).limit(300).toArray());
 });

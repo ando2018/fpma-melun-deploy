@@ -1,4 +1,7 @@
-require('dotenv').config();
+// Le .env est toujours lu dans fpma-backend/, quel que soit le dossier d'où PM2 a été lancé.
+const envFile = require('path').join(__dirname, '..', '.env');
+const envResult = require('dotenv').config({ path: envFile });
+console.log(envResult.error ? `⚠ Fichier .env introuvable (${envFile}) : réglages par défaut.` : `Réglages lus dans ${envFile}`);
 
 const express = require('express');
 const cors = require('cors');
@@ -233,6 +236,11 @@ async function start() {
 
   await initPush();
   startBackups();
+
+  // État du paiement en ligne dans le journal PM2 (sans afficher les clés).
+  const stripeState = require('./utils/stripe').diagnose();
+  console.log(stripeState.enabled ? `Paiement en ligne Stripe : activé (mode ${stripeState.mode}).` : 'Paiement en ligne Stripe : désactivé.');
+  stripeState.problems.forEach(p => console.log(`  ⚠ Stripe : ${p}`));
 
   app.listen(PORT, () => {
     console.log(`FPMA backend à l'écoute sur http://localhost:${PORT}`);

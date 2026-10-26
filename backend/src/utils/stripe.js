@@ -12,16 +12,38 @@ const crypto = require('crypto');
 const API_BASE = process.env.STRIPE_API_BASE || 'https://api.stripe.com';
 const WEBHOOK_TOLERANCE_S = 5 * 60;
 
+// Clé nettoyée (espaces ou guillemets copiés par erreur autour de la clé).
 function secretKey() {
-  return process.env.STRIPE_SECRET_KEY || '';
+  return String(process.env.STRIPE_SECRET_KEY || '').trim().replace(/^["']|["']$/g, '');
 }
 
+// Clé secrète (sk_…) ou restreinte (rk_…), de test ou réelle.
 function isConfigured() {
-  return /^sk_(test|live)_/.test(secretKey()) || (!!process.env.STRIPE_API_BASE && !!secretKey());
+  return /^(sk|rk)_(test|live)_/.test(secretKey()) || (!!process.env.STRIPE_API_BASE && !!secretKey());
 }
 
 function mode() {
-  return secretKey().startsWith('sk_live_') ? 'live' : 'test';
+  return /^(sk|rk)_live_/.test(secretKey()) ? 'live' : 'test';
+}
+
+// Explication lisible de l'état de la configuration (journal PM2 et admin), sans jamais
+// afficher la clé.
+function diagnose() {
+  const key = secretKey();
+  const webhook = String(process.env.STRIPE_WEBHOOK_SECRET || '').trim();
+  const problems = [];
+  if (!process.env.STRIPE_SECRET_KEY) {
+    problems.push('STRIPE_SECRET_KEY absente : elle doit être dans fpma-backend/.env (pas dans .env.example), puis « pm2 restart fpma-backend ».');
+  } else if (/^pk_/.test(key)) {
+    problems.push('STRIPE_SECRET_KEY contient la clé PUBLIQUE (pk_…) : il faut la clé SECRÈTE (sk_test_… ou sk_live_…).');
+  } else if (/^whsec_/.test(key)) {
+    problems.push('STRIPE_SECRET_KEY contient le secret du webhook (whsec_…) : il faut la clé secrète sk_…, et whsec_ va dans STRIPE_WEBHOOK_SECRET.');
+  } else if (!isConfigured()) {
+    problems.push(`STRIPE_SECRET_KEY ne ressemble pas à une clé Stripe (elle commence par « ${key.slice(0, 3)}… » au lieu de sk_test_ ou sk_live_).`);
+  }
+  if (!webhook) problems.push('STRIPE_WEBHOOK_SECRET absente : les paiements fonctionnent, mais les statuts « expiré » et les paiements différés ne seront pas mis à jour automatiquement.');
+  else if (!/^whsec_/.test(webhook)) problems.push('STRIPE_WEBHOOK_SECRET ne commence pas par whsec_.');
+  return { enabled: isConfigured(), mode: isConfigured() ? mode() : null, webhook: /^whsec_/.test(webhook), problems };
 }
 
 // Encodage « formulaire » de Stripe : { a: { b: 1 } } -> a[b]=1 ; tableaux indexés.
@@ -71,6 +93,7 @@ function retrieveCheckoutSession(id) {
 // En-tête Stripe-Signature : « t=horodatage,v1=signature[,v1=…] ». La signature est un
 // HMAC-SHA256 de « horodatage.corps brut » avec le secret du webhook.
 function verifyWebhook(rawBody, header, secret = process.env.STRIPE_WEBHOOK_SECRET) {
+  secret = String(secret || '').trim().replace(/^["']|["']$/g, '');
   if (!secret) throw new Error('STRIPE_WEBHOOK_SECRET manquant.');
   const parts = String(header || '').split(',').map(p => p.split('='));
   const timestamp = parts.find(([k]) => k === 't')?.[1];
@@ -83,4 +106,4 @@ function verifyWebhook(rawBody, header, secret = process.env.STRIPE_WEBHOOK_SECR
   return JSON.parse(rawBody.toString('utf8'));
 }
 
-module.exports = { isConfigured, mode, createCheckoutSession, retrieveCheckoutSession, verifyWebhook };
+module.exports = { isConfigured, mode, diagnose, createCheckoutSession, retrieveCheckoutSession, verifyWebhook };
