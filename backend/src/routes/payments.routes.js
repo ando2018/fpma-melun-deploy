@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const asyncRouter = require('../utils/asyncRouter');
-const { col, NO_ID, isDuplicateKey } = require('../utils/db');
-const { requireTab } = require('../utils/auth');
+const { col, NO_ID, isDuplicateKey, getSetting, setSetting } = require('../utils/db');
+const { requireTab, requireAdmin } = require('../utils/auth');
 const { getBaseUrl } = require('../utils/baseUrl');
 const stripe = require('../utils/stripe');
 const { sendPaymentReceipt } = require('../utils/paymentReceipt');
@@ -27,6 +27,14 @@ const MAX_SUGGESTED = 6;
 const CHECKOUT_LIMIT = 10;
 const CHECKOUT_WINDOW_MS = 10 * 60 * 1000;
 const STATUSES = ['pending', 'processing', 'paid', 'failed', 'expired', 'abandoned'];
+// Interrupteur du superadmin : coupe le paiement en ligne sans toucher à la configuration Stripe.
+const ONLINE_SETTING = 'payments-online';
+const PAUSED_MESSAGE = 'Le paiement en ligne est momentanément indisponible.';
+
+async function onlineState() {
+  const state = await getSetting(ONLINE_SETTING, null);
+  return { active: state?.active !== false, changedBy: state?.by || null, changedAt: state?.at || null };
+}
 
 function newId(prefix) {
   return `${prefix}-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
@@ -194,8 +202,10 @@ function tooManyCheckouts(ip) {
 
 // ---------- Public ----------
 
-router.get('/config', (req, res) => {
-  res.json({ enabled: stripe.isConfigured(), mode: stripe.isConfigured() ? stripe.mode() : null });
+router.get('/config', async (req, res) => {
+  const { active } = await onlineState();
+  const configured = stripe.isConfigured();
+  res.json({ enabled: configured && active, paused: !active, mode: configured ? stripe.mode() : null });
 });
 
 router.get('/choices', async (req, res) => {
@@ -212,6 +222,7 @@ router.get('/choices/:slug', async (req, res) => {
 // POST /api/payments/checkout  { slug, amount (euros, montant libre), name, email, message }
 router.post('/checkout', async (req, res) => {
   if (!stripe.isConfigured()) return res.status(503).json({ error: 'Le paiement en ligne n’est pas encore disponible.' });
+  if (!(await onlineState()).active) return res.status(503).json({ error: PAUSED_MESSAGE });
   if (tooManyCheckouts(req.ip)) return res.status(429).json({ error: 'Trop de tentatives : réessayez dans quelques minutes.' });
   const choice = await choices().findOne({ slug: String(req.body?.slug || ''), active: true }, NO_ID);
   if (!choice) return res.status(404).json({ error: 'Ce choix de paiement n’est plus disponible.' });
@@ -427,8 +438,17 @@ router.post('/admin/payments/:id/receipt', canManage, async (req, res) => {
 });
 
 // GET /api/payments/admin/status - état de la configuration Stripe et e-mail (sans les clés).
-router.get('/admin/status', canManage, (req, res) => {
-  res.json({ ...stripe.diagnose(), smtp: require('../utils/mailer').isSmtpConfigured() });
+router.get('/admin/status', canManage, async (req, res) => {
+  res.json({ ...stripe.diagnose(), smtp: require('../utils/mailer').isSmtpConfigured(), online: await onlineState() });
+});
+
+// PUT /api/payments/admin/online  { active } - superadmin uniquement.
+router.put('/admin/online', requireAdmin, async (req, res) => {
+  if (typeof req.body?.active !== 'boolean') return res.status(400).json({ error: 'Valeur « active » manquante.' });
+  const active = req.body.active;
+  await setSetting(ONLINE_SETTING, { active, by: req.user.username, at: new Date().toISOString() });
+  await logAction(req, active ? 'Paiement en ligne activé' : 'Paiement en ligne désactivé', active ? 'Les pages de paiement sont de nouveau ouvertes.' : PAUSED_MESSAGE);
+  res.json(await onlineState());
 });
 
 router.get('/admin/logs', canManage, async (req, res) => {

@@ -22,6 +22,8 @@ fs.mkdirSync(RECORDINGS_DIR, { recursive: true });
 
 const MAX_CHUNK_BYTES = 50 * 1024 * 1024;
 const DOWNLOAD_LINK_TTL_MS = 5 * 60 * 1000;
+// Lecture dans l'admin : le lecteur redemande des morceaux tant qu'on regarde.
+const VIEW_LINK_TTL_MS = 4 * 60 * 60 * 1000;
 const TYPES = {
   'video/webm': 'webm',
   'video/mp4': 'mp4'
@@ -160,12 +162,14 @@ router.put('/:id', canManage, async (req, res) => {
   res.json(publicRecording({ ...recording, ...update }));
 });
 
-// GET /api/live-recordings/:id/download-link - lien de téléchargement signé (5 min)
+// GET /api/live-recordings/:id/download-link - lien de téléchargement signé (5 min) ;
+// avec ?view=1, lien de lecture dans le navigateur (4 h).
 router.get('/:id/download-link', canManage, async (req, res) => {
   const recording = await recordings().findOne({ id: req.params.id }, NO_ID);
   if (!recording) return res.status(404).json({ error: 'Enregistrement introuvable.' });
-  const token = createSignedValue({ recording: recording.id }, DOWNLOAD_LINK_TTL_MS);
-  res.json({ url: `/api/live-recordings/${encodeURIComponent(recording.id)}/download?t=${encodeURIComponent(token)}` });
+  const view = req.query.view === '1';
+  const token = createSignedValue({ recording: recording.id }, view ? VIEW_LINK_TTL_MS : DOWNLOAD_LINK_TTL_MS);
+  res.json({ url: `/api/live-recordings/${encodeURIComponent(recording.id)}/download?t=${encodeURIComponent(token)}${view ? '&view=1' : ''}` });
 });
 
 // GET /api/live-recordings/:id/download?t=... - téléchargement (lien signé, sans connexion)
@@ -178,6 +182,7 @@ router.get('/:id/download', async (req, res) => {
   if (!recording || !fs.existsSync(fileOf(recording))) {
     return res.status(404).json({ error: 'Enregistrement introuvable.' });
   }
+  if (req.query.view === '1') return res.sendFile(fileOf(recording), { headers: { 'Content-Type': recording.mimeType } });
   res.download(fileOf(recording), downloadName(recording), { headers: { 'Content-Type': recording.mimeType } });
 });
 

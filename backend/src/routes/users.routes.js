@@ -70,12 +70,9 @@ router.put('/:username', async (req, res) => {
   const access = parseAccess(req.body || {});
   if (access.error) return res.status(400).json({ error: access.error });
 
-  // Il doit toujours rester un administrateur, et on ne peut pas se retirer soi-même ce rôle.
+  // Un superadmin (administrateur) ne peut pas redevenir simple utilisateur.
   if (current.role === 'admin' && access.value.role !== 'admin') {
-    if (current.username === req.user.username) {
-      return res.status(400).json({ error: 'Vous ne pouvez pas retirer votre propre rôle d’administrateur.' });
-    }
-    if ((await countAdmins()) <= 1) return res.status(400).json({ error: 'Il doit rester au moins un administrateur.' });
+    return res.status(400).json({ error: 'Un superadmin ne peut pas devenir simple utilisateur.' });
   }
 
   const changes = { ...access.value, updatedAt: new Date().toISOString() };
