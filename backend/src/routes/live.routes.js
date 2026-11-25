@@ -270,6 +270,26 @@ function parseYoutube(input) {
   return null;
 }
 
+// Historique des actions sur le direct YouTube (lancer, arrêter, modifier, notifier) :
+// qui, quand, avec quel lien. Les plus récentes d'abord.
+const YOUTUBE_LOG_KEY = 'live-youtube-log';
+const YOUTUBE_LOG_SIZE = 100;
+
+async function logYoutube(user, action, config, extra = {}) {
+  const entry = {
+    id: newId('yt'),
+    at: new Date().toISOString(),
+    user: user?.username || null,
+    action,
+    title: config.title,
+    url: config.url,
+    audience: config.audience,
+    ...extra
+  };
+  const log = (await getSetting(YOUTUBE_LOG_KEY, [])) || [];
+  await setSetting(YOUTUBE_LOG_KEY, [entry, ...log].slice(0, YOUTUBE_LOG_SIZE));
+}
+
 async function readYoutube() {
   return { ...DEFAULT_YOUTUBE, ...(await getSetting(YOUTUBE_KEY, {})) };
 }
@@ -667,6 +687,9 @@ router.put('/youtube', adminOnly, async (req, res) => {
   const onAir = current.onAir && !!parsed.kind;
   const config = { ...current, url, ...parsed, title, description, audience, onAir, startedAt: onAir ? current.startedAt : null };
   await setSetting(YOUTUBE_KEY, config);
+  // Seulement si quelque chose a changé (un « Enregistrer » sans modification n'est pas noté).
+  const changed = ['url', 'title', 'description', 'audience'].filter(k => current[k] !== config[k]);
+  if (changed.length) await logYoutube(req.user, current.onAir && !onAir ? 'stop' : 'update', config, { changed, onAir });
   res.json(config);
 });
 
@@ -675,13 +698,37 @@ router.post('/youtube/start', adminOnly, async (req, res) => {
   if (!current.kind) return res.status(400).json({ error: 'Enregistrez d’abord le lien YouTube du direct.' });
   const config = { ...current, onAir: true, startedAt: current.onAir ? current.startedAt : new Date().toISOString(), startedBy: req.user.username };
   await setSetting(YOUTUBE_KEY, config);
+  if (!current.onAir) await logYoutube(req.user, 'start', config);
   res.json(config);
 });
 
 router.post('/youtube/stop', adminOnly, async (req, res) => {
-  const config = { ...(await readYoutube()), onAir: false, startedAt: null };
+  const current = await readYoutube();
+  const config = { ...current, onAir: false, startedAt: null };
   await setSetting(YOUTUBE_KEY, config);
+  if (current.onAir) {
+    // Durée d'affichage sur le site, en secondes.
+    const duration = current.startedAt ? Math.round((Date.now() - new Date(current.startedAt).getTime()) / 1000) : null;
+    await logYoutube(req.user, 'stop', current, { startedAt: current.startedAt, startedBy: current.startedBy, duration });
+  }
   res.json(config);
+});
+
+// Notification « en direct » envoyée depuis le panneau YouTube (l'envoi lui-même passe par
+// /api/push) : notée dans l'historique.
+router.post('/youtube/notified', adminOnly, async (req, res) => {
+  const sent = Math.max(0, Math.round(Number(req.body?.sent) || 0));
+  await logYoutube(req.user, 'notify', await readYoutube(), { sent });
+  res.status(201).json({ ok: true });
+});
+
+router.get('/youtube/history', adminOnly, async (req, res) => {
+  res.json((await getSetting(YOUTUBE_LOG_KEY, [])) || []);
+});
+
+router.delete('/youtube/history', adminOnly, async (req, res) => {
+  await setSetting(YOUTUBE_LOG_KEY, []);
+  res.status(204).end();
 });
 
 router.post('/start', adminOnly, async (req, res) => {
