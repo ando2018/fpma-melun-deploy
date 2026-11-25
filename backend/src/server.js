@@ -22,6 +22,12 @@ const shareImageRoutes = require('./routes/shareImage.routes');
 const banniereRoutes = require('./routes/banniere.routes');
 const liveRecordingsRoutes = require('./routes/liveRecordings.routes');
 const paymentsRoutes = require('./routes/payments.routes');
+const clientsRoutes = require('./routes/clients.routes');
+const espaceClientRoutes = require('./routes/espaceClient.routes');
+const votesRoutes = require('./routes/votes.routes');
+const messagesRoutes = require('./routes/messages.routes');
+const voteRapideRoutes = require('./routes/voteRapide.routes');
+const { migrateMessages } = require('./utils/messaging');
 
 const { connectDb, col } = require('./utils/db');
 const { importJsonOnce } = require('./utils/importJson');
@@ -65,6 +71,11 @@ app.use('/api/share-image', shareImageRoutes);
 app.use('/api/banniere', banniereRoutes);
 app.use('/api/live-recordings', liveRecordingsRoutes);
 app.use('/api/payments', paymentsRoutes);
+app.use('/api/clients', clientsRoutes);
+app.use('/api/espace-client', espaceClientRoutes);
+app.use('/api/votes', votesRoutes);
+app.use('/api/messages', messagesRoutes);
+app.use('/api/vote-rapide', voteRapideRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
@@ -212,6 +223,8 @@ app.use((err, req, res, next) => {
 // La base doit être prête avant d'accepter des requêtes.
 async function start() {
   await connectDb();
+  // Anciens e-mails (individuels et des groupes) repris dans la messagerie, une seule fois.
+  await migrateMessages();
   console.log(`MongoDB connecté (base « ${process.env.MONGODB_DB || 'fpma'} »)`);
 
   // Base vide (première installation, ou base vidée) : on restaure la dernière sauvegarde

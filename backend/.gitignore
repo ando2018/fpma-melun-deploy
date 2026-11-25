@@ -1,7 +1,7 @@
 node_modules/
 npm-debug.log*
 .env
-.env.examole
+.env.example
 .angular/
 
 
@@ -19,3 +19,6 @@ backups/
 
 # Enregistrements vidéo des directs (fichiers volumineux, gardés sur le serveur)
 recordings/
+
+# Pièces jointes des messages de l'espace paroissien (données personnelles, gardées sur le serveur)
+attachments/

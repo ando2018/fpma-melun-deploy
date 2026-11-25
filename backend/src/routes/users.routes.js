@@ -1,6 +1,6 @@
 const asyncRouter = require('../utils/asyncRouter');
 const { col, isDuplicateKey } = require('../utils/db');
-const { ADMIN_TABS, hashPassword, publicUser, requireAdmin } = require('../utils/auth');
+const { ADMIN_TABS, ACCESS_KEYS, CLIENT_SUBTABS, hashPassword, publicUser, requireAdmin } = require('../utils/auth');
 
 // Gestion des utilisateurs de l'administration (réservée aux administrateurs).
 
@@ -12,7 +12,12 @@ const MIN_PASSWORD_LENGTH = 6;
 
 function parseAccess(body) {
   const role = body.role === 'admin' ? 'admin' : 'user';
-  const tabs = Array.isArray(body.tabs) ? [...new Set(body.tabs.filter(t => ADMIN_TABS.includes(t)))] : [];
+  let tabs = Array.isArray(body.tabs) ? [...new Set(body.tabs.filter(t => ACCESS_KEYS.includes(t)))] : [];
+  // Droits sur les sous-onglets de « Paroissiens et dons » : seulement avec cet onglet.
+  if (!tabs.includes('clients')) tabs = tabs.filter(t => !t.startsWith('clients.'));
+  else if (!tabs.some(t => t.startsWith('clients.') && t !== 'clients.montants')) {
+    return { error: 'Cochez au moins une partie de « Paroissiens et dons ».' };
+  }
   if (role === 'user' && !tabs.length) return { error: 'Cochez au moins un onglet.' };
   return { value: { role, tabs: role === 'admin' ? [] : tabs } };
 }
@@ -31,7 +36,7 @@ async function countAdmins() {
 // GET /api/users
 router.get('/', async (req, res) => {
   const list = await users().find({}).sort({ username: 1 }).toArray();
-  res.json({ tabs: ADMIN_TABS, users: list.map(publicUser) });
+  res.json({ tabs: ADMIN_TABS, clientSubtabs: CLIENT_SUBTABS, users: list.map(publicUser) });
 });
 
 // POST /api/users  { username, password, role, tabs }

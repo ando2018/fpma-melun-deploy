@@ -238,6 +238,62 @@ async function canWatch(req, config, token) {
   return !!user && (user.role === 'admin' || user.tabs.includes('direct'));
 }
 
+// ---------- Direct YouTube ----------
+// Direct diffusé sur YouTube (OBS, application YouTube…) et simplement affiché sur le site
+// par le lecteur YouTube intégré. Indépendant du direct caméra : enregistré en base, il
+// survit à un redémarrage du serveur et ne dépend d'aucun appareil resté ouvert.
+const YOUTUBE_KEY = 'live-youtube';
+const YOUTUBE_AUDIENCES = ['public', 'test'];
+const DEFAULT_YOUTUBE = {
+  url: '',
+  kind: null, // 'video' (lien d'une vidéo / d'un direct) ou 'channel' (direct en cours de la chaîne)
+  videoId: null,
+  channelId: null,
+  title: 'Culte en direct',
+  description: '',
+  audience: 'public',
+  onAir: false,
+  startedAt: null,
+  startedBy: null
+};
+
+// Lien YouTube -> vidéo (11 caractères) ou chaîne (UC…). Les liens « @nom » ne
+// peuvent pas être intégrés : il faut le lien de la vidéo ou l'identifiant UC… de la chaîne.
+function parseYoutube(input) {
+  const url = String(input || '').trim();
+  if (!url) return null;
+  const video = url.match(/(?:youtube\.com\/(?:watch\?(?:[^#]*&)?v=|live\/|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})(?![\w-])/i);
+  if (video) return { kind: 'video', videoId: video[1], channelId: null };
+  const channel = url.match(/(?:youtube\.com\/channel\/|^)(UC[\w-]{22})(?![\w-])/);
+  if (channel) return { kind: 'channel', videoId: null, channelId: channel[1] };
+  if (/^[\w-]{11}$/.test(url)) return { kind: 'video', videoId: url, channelId: null };
+  return null;
+}
+
+async function readYoutube() {
+  return { ...DEFAULT_YOUTUBE, ...(await getSetting(YOUTUBE_KEY, {})) };
+}
+
+// Ce que reçoit un visiteur : rien tant que le direct YouTube n'est pas lancé, ou s'il est
+// en mode test et que le visiteur n'a pas l'onglet Direct.
+async function visibleYoutube(req) {
+  const yt = await readYoutube();
+  if (!yt.onAir || !yt.kind) return null;
+  if (yt.audience === 'test') {
+    const user = await authenticate(req).catch(() => null);
+    if (!user || !(user.role === 'admin' || user.tabs.includes('direct'))) return null;
+  }
+  return {
+    kind: yt.kind,
+    videoId: yt.videoId,
+    channelId: yt.channelId,
+    title: yt.title,
+    description: yt.description,
+    startedAt: yt.startedAt,
+    test: yt.audience === 'test'
+  };
+}
+
 function isValidSdp(sdp) {
   return typeof sdp === 'string' && sdp.length > 0 && sdp.length < MAX_SDP_LENGTH;
 }
@@ -248,6 +304,10 @@ async function publicShareInfo() {
   cleanup();
   const config = await readConfig();
   const onAir = state.onAir && config.visible && config.audience === 'public';
+  if (!onAir) {
+    const yt = await readYoutube();
+    if (yt.onAir && yt.kind && yt.audience === 'public') return { onAir: true, title: yt.title, description: yt.description };
+  }
   return { onAir, title: config.title, description: config.description };
 }
 
@@ -290,7 +350,9 @@ router.get('/status', async (req, res) => {
     onAir: visible && state.onAir,
     startedAt: visible ? state.startedAt : null,
     viewers: visible ? approvedCount() : 0,
-    full: approvedCount() >= max
+    full: approvedCount() >= max,
+    // Direct YouTube en cours (jamais sur le lien d'un direct privé).
+    youtube: token ? null : await visibleYoutube(req)
   });
 });
 
@@ -575,6 +637,51 @@ router.delete('/history/:id', adminOnly, async (req, res) => {
   if (state.session?.id === req.params.id) return res.status(409).json({ error: 'Direct en cours.' });
   await sessions().deleteOne({ id: req.params.id });
   res.status(204).end();
+});
+
+// --- Direct YouTube (admin) ---
+
+router.get('/youtube', adminOnly, async (req, res) => {
+  res.json(await readYoutube());
+});
+
+// PUT /api/live/youtube  { url, title, description, audience }
+router.put('/youtube', adminOnly, async (req, res) => {
+  const current = await readYoutube();
+  const url = req.body?.url !== undefined ? String(req.body.url).trim() : current.url;
+  if (url.length > 300) return res.status(400).json({ error: 'Lien trop long.' });
+  const parsed = url ? parseYoutube(url) : { kind: null, videoId: null, channelId: null };
+  if (!parsed) {
+    return res.status(400).json({
+      error: 'Lien YouTube non reconnu. Collez le lien de la vidéo du direct (youtube.com/live/…, youtube.com/watch?v=…, youtu.be/…) ou l’identifiant de la chaîne (UC…).'
+    });
+  }
+  const title = req.body?.title !== undefined ? String(req.body.title).trim() : current.title;
+  if (!title) return res.status(400).json({ error: 'Le titre est requis.' });
+  if (title.length > 120) return res.status(400).json({ error: 'Titre trop long (120 caractères max).' });
+  const description = req.body?.description !== undefined ? String(req.body.description).trim() : current.description;
+  if (description.length > 1000) return res.status(400).json({ error: 'Description trop longue (1000 caractères max).' });
+  const audience = req.body?.audience !== undefined ? req.body.audience : current.audience;
+  if (!YOUTUBE_AUDIENCES.includes(audience)) return res.status(400).json({ error: 'Public du direct invalide.' });
+  // Lien retiré : le direct YouTube ne peut plus être affiché.
+  const onAir = current.onAir && !!parsed.kind;
+  const config = { ...current, url, ...parsed, title, description, audience, onAir, startedAt: onAir ? current.startedAt : null };
+  await setSetting(YOUTUBE_KEY, config);
+  res.json(config);
+});
+
+router.post('/youtube/start', adminOnly, async (req, res) => {
+  const current = await readYoutube();
+  if (!current.kind) return res.status(400).json({ error: 'Enregistrez d’abord le lien YouTube du direct.' });
+  const config = { ...current, onAir: true, startedAt: current.onAir ? current.startedAt : new Date().toISOString(), startedBy: req.user.username };
+  await setSetting(YOUTUBE_KEY, config);
+  res.json(config);
+});
+
+router.post('/youtube/stop', adminOnly, async (req, res) => {
+  const config = { ...(await readYoutube()), onAir: false, startedAt: null };
+  await setSetting(YOUTUBE_KEY, config);
+  res.json(config);
 });
 
 router.post('/start', adminOnly, async (req, res) => {

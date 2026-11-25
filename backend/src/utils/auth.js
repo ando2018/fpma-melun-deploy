@@ -9,7 +9,36 @@ const SECRET = process.env.AUTH_SECRET || crypto.randomBytes(32).toString('hex')
 
 // Onglets de l'administration auxquels on peut donner accès. Un administrateur les a
 // tous, plus la gestion des utilisateurs.
-const ADMIN_TABS = ['vaovao', 'direct', 'evenements', 'banniere', 'sary', 'diaporama', 'notifications', 'messages', 'stats', 'tombola', 'paiements'];
+const ADMIN_TABS = ['vaovao', 'direct', 'evenements', 'banniere', 'sary', 'diaporama', 'notifications', 'messages', 'stats', 'tombola', 'paiements', 'clients'];
+
+// Sous-onglets de « Paroissiens et dons » : droits enregistrés comme « clients.quetes »…
+// Sans aucun de ces droits, l'onglet « clients » donne accès à tout (comptes d'avant).
+const CLIENT_SUBTABS = ['paroissiens', 'quetes', 'situation', 'votes', 'groupes', 'rapports', 'journal', 'montants'];
+// « montants » n'est pas une partie à afficher : c'est le droit de voir les montants
+// (totaux de la liste des paroissiens et montants des exports).
+const ACCESS_KEYS = [...ADMIN_TABS, ...CLIENT_SUBTABS.map(s => `clients.${s}`)];
+
+/** Sous-onglets de « Paroissiens et dons » accessibles à l'utilisateur. */
+function clientsSubtabs(user) {
+  if (user.role === 'admin') return [...CLIENT_SUBTABS];
+  const tabs = user.tabs || [];
+  if (!tabs.includes('clients')) return [];
+  const subs = tabs.filter(t => t.startsWith('clients.')).map(t => t.slice(8));
+  return subs.length ? subs : [...CLIENT_SUBTABS];
+}
+
+/** Droit de voir les montants dans la liste des paroissiens et les exports. */
+function canSeeAmounts(user) {
+  return clientsSubtabs(user || {}).includes('montants');
+}
+
+/** Middleware (après requireTab('clients')) : au moins un des sous-onglets indiqués. */
+function requireClientsSub(...subs) {
+  return (req, res, next) => {
+    if (clientsSubtabs(req.user || {}).some(s => subs.includes(s))) return next();
+    res.status(403).json({ error: 'Vous n’avez pas accès à cette partie de « Paroissiens et dons ».' });
+  };
+}
 
 function hashPassword(password) {
   const salt = crypto.randomBytes(16).toString('hex');
@@ -66,7 +95,7 @@ const verifySignedValue = verifyToken;
 function accessOf(user) {
   if (user.role === 'admin') return { role: 'admin', tabs: [...ADMIN_TABS] };
   const tabs = Array.isArray(user.tabs) ? user.tabs : user.role === 'tombola' ? ['tombola'] : [];
-  return { role: 'user', tabs: tabs.filter(t => ADMIN_TABS.includes(t)) };
+  return { role: 'user', tabs: tabs.filter(t => ACCESS_KEYS.includes(t)) };
 }
 
 // Profil renvoyé au site (jamais le mot de passe).
@@ -82,7 +111,9 @@ function publicUser(user) {
 async function authenticate(req) {
   const header = req.get('authorization') || '';
   const token = verifyToken(header.replace(/^Bearer\s+/i, ''));
-  if (!token) return null;
+  // Seuls les jetons de connexion admin portent un identifiant (pas ceux de l'espace client
+  // ni les liens signés).
+  if (!token || typeof token.username !== 'string') return null;
   const user = await col('users').findOne({ username: token.username });
   if (!user || user.disabled) return null;
   return { ...user, ...accessOf(user) };
@@ -111,6 +142,11 @@ const requireAuth = guard(() => true);
 
 module.exports = {
   ADMIN_TABS,
+  CLIENT_SUBTABS,
+  ACCESS_KEYS,
+  clientsSubtabs,
+  canSeeAmounts,
+  requireClientsSub,
   createSignedValue,
   verifySignedValue,
   authenticate,

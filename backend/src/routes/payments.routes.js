@@ -5,6 +5,7 @@ const { requireTab, requireAdmin } = require('../utils/auth');
 const { getBaseUrl } = require('../utils/baseUrl');
 const stripe = require('../utils/stripe');
 const { sendPaymentReceipt } = require('../utils/paymentReceipt');
+const { linkStripePayment } = require('../utils/clients');
 
 // Paiement en ligne (Stripe Checkout) : choix paramétrables dans l'admin (Adidy, Don,
 // Achat…), page de paiement publique qui ouvre la page sécurisée de Stripe, statut mis
@@ -107,6 +108,8 @@ async function applyStatus(payment, status, source, extra = {}, entry = {}, forc
   // Paiement réglé : reçu par e-mail (en arrière-plan, envoyé une seule fois).
   if (changes && status === 'paid') {
     sendPaymentReceipt(payment.id).catch(err => console.error('Reçu de paiement non envoyé :', err.message));
+    // Même e-mail qu'une fiche client : le paiement s'ajoute à ses versements.
+    linkStripePayment(payment.id).catch(err => console.error('Paiement non rattaché au paroissien :', err.message));
   }
   return { ...payment, ...update };
 }
