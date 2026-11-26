@@ -246,6 +246,7 @@ const YOUTUBE_KEY = 'live-youtube';
 const YOUTUBE_AUDIENCES = ['public', 'test'];
 const DEFAULT_YOUTUBE = {
   url: '',
+  embeddable: null,
   kind: null, // 'video' (lien d'une vidéo / d'un direct) ou 'channel' (direct en cours de la chaîne)
   videoId: null,
   channelId: null,
@@ -290,6 +291,22 @@ async function logYoutube(user, action, config, extra = {}) {
   await setSetting(YOUTUBE_LOG_KEY, [entry, ...log].slice(0, YOUTUBE_LOG_SIZE));
 }
 
+// La vidéo peut-elle être lue sur un autre site ? YouTube répond 401 à oEmbed quand le
+// propriétaire a désactivé l'intégration (le lecteur affiche alors « Erreur 153 »).
+// true / false, ou null si on ne sait pas (réseau, chaîne entière…).
+async function checkEmbeddable(config) {
+  if (config.kind !== 'video' || !config.videoId) return null;
+  try {
+    const url = `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(`https://www.youtube.com/watch?v=${config.videoId}`)}`;
+    const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    if (response.ok) return true;
+    if (response.status === 401 || response.status === 403) return false;
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 async function readYoutube() {
   return { ...DEFAULT_YOUTUBE, ...(await getSetting(YOUTUBE_KEY, {})) };
 }
@@ -310,6 +327,8 @@ async function visibleYoutube(req) {
     title: yt.title,
     description: yt.description,
     startedAt: yt.startedAt,
+    // false : lecture impossible sur le site, le visiteur est envoyé sur YouTube.
+    embeddable: yt.embeddable ?? null,
     test: yt.audience === 'test'
   };
 }
@@ -686,6 +705,8 @@ router.put('/youtube', adminOnly, async (req, res) => {
   // Lien retiré : le direct YouTube ne peut plus être affiché.
   const onAir = current.onAir && !!parsed.kind;
   const config = { ...current, url, ...parsed, title, description, audience, onAir, startedAt: onAir ? current.startedAt : null };
+  // Vérifié à chaque enregistrement (le réglage peut avoir été changé dans YouTube Studio).
+  config.embeddable = await checkEmbeddable(config);
   await setSetting(YOUTUBE_KEY, config);
   // Seulement si quelque chose a changé (un « Enregistrer » sans modification n'est pas noté).
   const changed = ['url', 'title', 'description', 'audience'].filter(k => current[k] !== config[k]);
@@ -697,6 +718,7 @@ router.post('/youtube/start', adminOnly, async (req, res) => {
   const current = await readYoutube();
   if (!current.kind) return res.status(400).json({ error: 'Enregistrez d’abord le lien YouTube du direct.' });
   const config = { ...current, onAir: true, startedAt: current.onAir ? current.startedAt : new Date().toISOString(), startedBy: req.user.username };
+  config.embeddable = await checkEmbeddable(config);
   await setSetting(YOUTUBE_KEY, config);
   if (!current.onAir) await logYoutube(req.user, 'start', config);
   res.json(config);
