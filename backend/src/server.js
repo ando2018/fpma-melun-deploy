@@ -174,7 +174,8 @@ if (fs.existsSync(FRONTEND_INDEX)) {
         description: info.onAir
           ? buildDescription(info.description) || 'Suivez le direct de la FPMA Melun.'
           : 'Pas de direct pour le moment : vous serez notifié lors du prochain direct de la FPMA Melun.',
-        url: `${getBaseUrl(req)}/direct`,
+        // ?d= (propre à chaque direct) gardé : sinon Facebook reprendrait l'aperçu de /direct en cache.
+        url: `${getBaseUrl(req)}/direct${/^[a-z0-9]{1,16}$/i.test(String(req.query.d || '')) ? `?d=${req.query.d}` : ''}`,
         image: `${getBaseUrl(req)}/api/live/share-image.jpg?v=${liveRoutes.shareImageKey(info)}`
       });
     }
